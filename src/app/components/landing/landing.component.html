@@ -1,11 +1,14 @@
 <!-- Toolbar -->
-<div class="toolbar" role="banner">
-    <img
-      alt="Angular Logo"
-      src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTAgMjUwIj4KICAgIDxwYXRoIGZpbGw9IiNERDAwMzEiIGQ9Ik0xMjUgMzBMMzEuOSA2My4ybDE0LjIgMTIzLjFMMTI1IDIzMGw3OC45LTQzLjcgMTQuMi0xMjMuMXoiIC8+CiAgICA8cGF0aCBmaWxsPSIjQzMwMDJGIiBkPSJNMTI1IDMwdjIyLjItLjFWMjMwbDc4LjktNDMuNyAxNC4yLTEyMy4xTDEyNSAzMHoiIC8+CiAgICA8cGF0aCAgZmlsbD0iI0ZGRkZGRiIgZD0iTTEyNSA1Mi4xTDY2LjggMTgyLjZoMjEuN2wxMS43LTI5LjJoNDkuNGwxMS43IDI5LjJIMTgzTDEyNSA1Mi4xem0xNyA4My4zaC0zNGwxNy00MC45IDE3IDQwLjl6IiAvPgogIDwvc3ZnPg=="
-      width="40"
-    />
-    <span>{{ title }}</span>
+  <div class="toolbar" role="banner">
+    <div class="spacer" (click)="goToPage('home')">
+      <img
+        alt="Angular Logo"
+        src="../../assets/images/logo/logo.png"
+        width="60"
+      />
+      <span>{{ title }}</span>
+    </div>
+    
     <div class="spacer"></div>
   
     <ngx-auth-firebaseui-avatar></ngx-auth-firebaseui-avatar>
@@ -16,7 +19,7 @@
     <!-- Highlight Card -->
     <div class="card highlight-card card-small">
   
-      <svg alt="Rocket Ship" height="101.678" id="rocket" viewBox="0 0 101.678 101.678" width="101.678"
+      <!-- <svg alt="Rocket Ship" height="101.678" id="rocket" viewBox="0 0 101.678 101.678" width="101.678"
            xmlns="http://www.w3.org/2000/svg">
         <g data-name="Group 83" id="Group_83" transform="translate(-141 -696)">
           <circle cx="50.839" cy="50.839" data-name="Ellipse 8" fill="#dd0031" id="Ellipse_8" r="50.839"
@@ -34,9 +37,9 @@
               id="Path_34" transform="translate(0 0.005)"/>
           </g>
         </g>
-      </svg>
+      </svg> -->
   
-      <span>{{ title }} is running!</span>
+      <span>{{ title }} is in progress!</span>
   
       <svg alt="Rocket Ship Smoke" height="1083.632" id="rocket-smoke" viewBox="0 0 516.119 1083.632" width="516.119"
            xmlns="http://www.w3.org/2000/svg">
@@ -51,14 +54,15 @@
   
     <mat-card>
   
-      <mat-toolbar>
+      <!-- <mat-toolbar>
         ngx-auth-firebaseui
-      </mat-toolbar>
+      </mat-toolbar> -->
   
   
       <mat-card-content>
         <ngx-auth-firebaseui [providers]="[providers.Google]"
                              [guestEnabled]="false"
+                             [goBackURL]="'home'"
                              (onSuccess)="printUser($event)"
                              (onError)="printError($event)"
                              (selectedTabChange)="onTabChange($event)">

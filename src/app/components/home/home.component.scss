@@ -28,10 +28,15 @@
     height: 70px;
     display: flex;
     align-items: center;
-    background-color: #1976d2;
+    background-color: #673ab7;
     color: white;
     font-weight: 600;
     padding: 0 16px;
+
+    div {
+      display: flex;
+      align-items: center;
+    }
   }
 
   .toolbar img {
@@ -126,17 +131,13 @@
   }
 
   .card.highlight-card {
-    background-color: #1976d2;
+    background-color: #F3E6FF;
     color: white;
     font-weight: 600;
     border: none;
     width: auto;
-    min-width: 30%;
+    min-width: 40%;
     position: relative;
-  }
-
-  .card.card.highlight-card span {
-    margin-left: 60px;
   }
 
   svg#rocket {
