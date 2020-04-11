@@ -6,7 +6,6 @@ import {Router} from '@angular/router';
 import {AngularFireAuth} from '@angular/fire/auth';
 import {MatTabChangeEvent} from '@angular/material/tabs';
 import {AngularFirestore} from '@angular/fire/firestore';
-import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-root',
