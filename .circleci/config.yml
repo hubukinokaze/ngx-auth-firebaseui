@@ -27,9 +27,9 @@ jobs:
           - v1-dependencies-
       - run: ls -la && pwd
       - run: git --version
-      - run: npm install
+      - run: npm install @angular/cli@9.0.1 -g
       - run: npm install --only=dev
-      - run: npm run build
+      - run: ng build --prod --aot
       - run: ls -la && pwd
 
       - save_cache:
@@ -37,10 +37,15 @@ jobs:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
 
-      - persist_to_workspace:
-                root: .
-                paths:
-                  - dist
+      - run:
+          name: Install awscli
+          command: |
+            apt-get update
+            apt-get install -y python-pip python-dev
+            pip install awscli
+      #- run:
+      #    name: Deploy to S3
+      #    command: aws s3 sync $AWS_PATH s3://hikineetos-life/ --delete
       # run tests!
       #- run: npm test
 
