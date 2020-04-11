@@ -18,6 +18,12 @@ jobs:
 
     steps:
       - checkout
+      - run:
+          name: Greeting
+          command: echo Hello, world.
+      - run:
+          name: Print the Current Time
+          command: date
 
       # Download and cache dependencies
       - restore_cache:
@@ -28,11 +34,15 @@ jobs:
       - run: ls -la && pwd
       - run: git --version
       - run: 
-          environment:
-              NG_CLI_ANALYTICS: "ci"
-          command: sudo npm install @angular/cli@9.0.1 -g
-      - run: npm install --only=dev
-      - run: ng build --prod --aot
+          name: Install dependencies
+          command: |
+              ng analytics off
+              sudo npm install @angular/cli@9.0.1 -g
+              npm install --only=dev
+      - run:
+          name: Generate static website
+          command: |
+            ng build --prod --aot
       - run: ls -la && pwd
 
       - save_cache:
