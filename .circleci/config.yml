@@ -46,7 +46,7 @@ jobs:
       - run:
           name: Generate static website
           command: |
-            ng build --prod --aot
+            npm run build:prod
       - run: ls -la && pwd
 
       - save_cache:
