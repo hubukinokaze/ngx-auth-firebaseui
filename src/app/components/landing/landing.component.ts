@@ -6,6 +6,7 @@ import {Router} from '@angular/router';
 import {AngularFireAuth} from '@angular/fire/auth';
 import {MatTabChangeEvent} from '@angular/material/tabs';
 import {AngularFirestore} from '@angular/fire/firestore';
+import * as firebase from 'firebase';
 
 @Component({
   selector: 'app-landing',
@@ -65,6 +66,9 @@ export class LandingComponent implements OnDestroy {
     console.error('onError event --> ', event);
     this.error = true;
 
+    this.auth.auth.signInWithRedirect(new firebase.auth.GoogleAuthProvider()).then( (cred) => {
+      console.log(11, cred);
+    }).catch((error) => console.log(error));
     // this.snackbar.open(event.message, 'OK', {duration: 5000});
   }
 
