@@ -16,6 +16,8 @@ import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 import {FormsModule} from '@angular/forms';
 import {MarkdownModule} from 'ngx-markdown';
 import {FlipComponent, FlipSection} from './flip/flip.component';
+import {HomeComponent} from './components/home/home.component';
+import {LandingComponent} from './components/landing/landing.component';
 import {MatButtonModule} from '@angular/material/button';
 import {MatTabsModule} from '@angular/material/tabs';
 import {MatIconModule} from '@angular/material/icon';
@@ -44,7 +46,9 @@ export function createTranslateLoader(http: HttpClient) {
   declarations: [
     AppComponent,
     FlipSection,
-    FlipComponent
+    FlipComponent,
+    HomeComponent,
+    LandingComponent
   ],
   imports: [
     BrowserModule.withServerTransition({appId: 'serverApp'}),
@@ -58,8 +62,8 @@ export function createTranslateLoader(http: HttpClient) {
         enableFirestoreSync: true,
         toastMessageOnAuthSuccess: true,
         toastMessageOnAuthError: true,
-        authGuardFallbackURL: 'examples/logged-out',
-        authGuardLoggedInURL: 'examples/logged-in',
+        authGuardFallbackURL: 'landing',
+        authGuardLoggedInURL: 'home',
       }),
     TranslateModule.forRoot({
       loader: {

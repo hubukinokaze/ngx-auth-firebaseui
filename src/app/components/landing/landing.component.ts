@@ -8,11 +8,11 @@ import {MatTabChangeEvent} from '@angular/material/tabs';
 import {AngularFirestore} from '@angular/fire/firestore';
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  selector: 'app-landing',
+  templateUrl: './landing.component.html',
+  styleUrls: ['./landing.component.scss']
 })
-export class AppComponent implements OnDestroy {
+export class LandingComponent implements OnDestroy {
 
   title = 'Heavenly Parent Reflections';
 
@@ -48,6 +48,17 @@ export class AppComponent implements OnDestroy {
     console.log('onSuccess event ->', event);
     this.error = false;
     this.index = 2;
+    this.db
+            .doc('users/' + event.uid)
+            .update({ 
+              firstName: '',
+              lastName: '',
+              darkMode: false,
+              primaryRole: 'member',
+              secondaryRole: ''
+           });
+
+    this.goToPage('home');
   }
 
   printError(event) {
@@ -77,5 +88,9 @@ export class AppComponent implements OnDestroy {
 
   createAccount() {
     console.log('create account has beeen requested');
+  }
+
+  public goToPage(link) {
+    this.router.navigate([link]);
   }
 }
