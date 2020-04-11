@@ -42,7 +42,7 @@ jobs:
           name: Install dependencies
           command: |
               npm install @angular/cli@9.0.1 -g
-              npm install --only=dev
+              npm install
       - run:
           name: Generate static website
           command: |
