@@ -41,7 +41,6 @@ jobs:
       - run: 
           name: Install dependencies
           command: |
-              ng analytics off
               sudo npm install @angular/cli@9.0.1 -g /dev/null
               npm install --only=dev
       - run:
