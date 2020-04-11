@@ -41,7 +41,7 @@ jobs:
       - run: 
           name: Install dependencies
           command: |
-              sudo npm install @angular/cli@9.0.1 -g /dev/null
+              npm install @angular/cli@9.0.1 -g /dev/null
               npm install --only=dev
       - run:
           name: Generate static website
