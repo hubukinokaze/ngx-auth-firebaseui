@@ -27,7 +27,7 @@ jobs:
           - v1-dependencies-
       - run: ls -la && pwd
       - run: git --version
-      - run: npm install @angular/cli@9.0.1 -g
+      - run: sudo npm install @angular/cli@9.0.1 -g
       - run: npm install --only=dev
       - run: ng build --prod --aot
       - run: ls -la && pwd
