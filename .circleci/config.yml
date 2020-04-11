@@ -43,9 +43,9 @@ jobs:
             apt-get update
             apt-get install -y python-pip python-dev
             pip install awscli
-      #- run:
-      #    name: Deploy to S3
-      #    command: aws s3 sync $AWS_PATH s3://hikineetos-life/ --delete
+      - run:
+          name: Deploy to S3
+          command: aws s3 sync $AWS_PATH s3://reflection-table/ --delete
       # run tests!
       #- run: npm test
 
