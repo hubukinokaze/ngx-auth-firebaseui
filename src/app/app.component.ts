@@ -5,6 +5,8 @@ import {MatSnackBar} from '@angular/material/snack-bar';
 import {Router} from '@angular/router';
 import {AngularFireAuth} from '@angular/fire/auth';
 import {MatTabChangeEvent} from '@angular/material/tabs';
+import {AngularFirestore} from '@angular/fire/firestore';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-root',
@@ -13,7 +15,7 @@ import {MatTabChangeEvent} from '@angular/material/tabs';
 })
 export class AppComponent implements OnDestroy {
 
-  title = 'ngx-auth-firebaseui';
+  title = 'Heavenly Parent Reflections';
 
   viewSourceOfNgxAuthFirebaseuiComponent: boolean;
   viewSourceOfNgxAuthFirebaseuiLoginComponent: boolean;
@@ -29,11 +31,12 @@ export class AppComponent implements OnDestroy {
   public index: number;
   private _color: string;
 
-  providers = [AuthProvider.Facebook];
+  providers = AuthProvider;
   themes = Theme;
 
 
   constructor(public auth: AngularFireAuth,
+              private db: AngularFirestore,
               public router: Router,
               public snackbar: MatSnackBar) {
   }
@@ -46,6 +49,12 @@ export class AppComponent implements OnDestroy {
     console.log('onSuccess event ->', event);
     this.error = false;
     this.index = 2;
+    this.db
+            .doc('users/' + event.uid)
+            .update({ 
+              FirstName: 'Jun',
+              LastName: 'Kawa'
+           });
   }
 
   printError(event) {

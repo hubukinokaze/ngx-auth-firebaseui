@@ -8,6 +8,7 @@ import {FlexLayoutModule} from '@angular/flex-layout';
 import {MatCardModule} from '@angular/material/card';
 import {Angulartics2Module} from 'angulartics2';
 import {AngularFireModule} from '@angular/fire';
+import {AngularFireDatabaseModule} from '@angular/fire/database';
 import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
 import {HttpClient, HttpClientModule} from '@angular/common/http';
 import {NgxAuthFirebaseUIModule} from 'ngx-auth-firebaseui';
@@ -21,16 +22,18 @@ import {MatIconModule} from '@angular/material/icon';
 import {MatToolbarModule} from '@angular/material/toolbar';
 
 export const firebaseKey = {
-  apiKey: 'AIzaSyASG7KxDO2z5AH9r0jlUmwiw68Ap8kG20c',
-  authDomain: 'ngx-auth-firebaseui.firebaseapp.com',
-  databaseURL: 'https://ngx-auth-firebaseui.firebaseio.com',
-  projectId: 'ngx-auth-firebaseui',
-  storageBucket: 'ngx-auth-firebaseui.appspot.com',
-  messagingSenderId: '520699629648'
+    apiKey: "AIzaSyC4CqiByhbG-3r2RGRnJ_dzWNighzZi6j4",
+    authDomain: "reflection-table.firebaseapp.com",
+    databaseURL: "https://reflection-table.firebaseio.com",
+    projectId: "reflection-table",
+    storageBucket: "reflection-table.appspot.com",
+    messagingSenderId: "315134424511",
+    appId: "1:315134424511:web:56fa720d9d9a5382ad1d0a",
+    measurementId: "G-ZPT178NW60"
 };
 
 export function firebaseAppNameFactory() {
-  return `you_app_name`;
+  return `reflection-table`;
 }
 
 export function createTranslateLoader(http: HttpClient) {
@@ -49,6 +52,7 @@ export function createTranslateLoader(http: HttpClient) {
     BrowserAnimationsModule,
     Angulartics2Module.forRoot(),
     AngularFireModule.initializeApp(firebaseKey),
+    AngularFireDatabaseModule,
     NgxAuthFirebaseUIModule.forRoot(firebaseKey, firebaseAppNameFactory,
       {
         enableFirestoreSync: true,
@@ -72,7 +76,8 @@ export function createTranslateLoader(http: HttpClient) {
     MatButtonModule,
     MatTabsModule,
     MatIconModule,
-    MatToolbarModule
+    MatToolbarModule,
+    NgxAuthFirebaseUIModule.forRoot(firebaseKey)
   ],
   providers: [],
   bootstrap: [AppComponent]
