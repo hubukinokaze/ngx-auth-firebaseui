@@ -4,9 +4,12 @@ import { Router } from '@angular/router';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
+import { MatDialog } from '@angular/material/dialog';
+// import {DataSource} from '@angular/cdk/collections';
 import { map } from "rxjs/operators";
 import { User } from '../../classes/user/user.model';
 import { Reflection } from '../../classes/reflection/reflection.model';
+import {AddDialog} from '../../dialogs/add/add.dialog';
 
 /** Constants used to fill up our data base. */
 const COLORS: string[] = [
@@ -26,15 +29,17 @@ const NAMES: string[] = [
 export class HomeComponent implements OnInit {
 
   public title = 'Heavenly Parent Reflections';
+  public user: User;
 
   public displayedColumns: string[] = ['chapter', 'name', 'source', 'episode', 'content', 'actions'];
-  public dataSource: MatTableDataSource<User>;
+  public dataSource: MatTableDataSource<Reflection>;
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
 
   constructor(private db: AngularFirestore,
-    public router: Router) {
+    public router: Router,
+    public dialog: MatDialog) {
     // Create 100 users
 
   }
@@ -52,11 +57,11 @@ export class HomeComponent implements OnInit {
     }
   }
 
-  private async getReflections() {
+  private getReflections() {
     this.db.collection<Reflection>('/reflections').get().pipe(
       map(snapshot => {
         let items = [];
-        snapshot.docs.map(async a => {
+        snapshot.docs.map(a => {
           const data = a.data();
           const id = a.id;
           items.push(new Reflection(id, data.carpChapter, data.content, data.episode, data.source, data.userId.id, data.userId.path));
@@ -94,18 +99,21 @@ export class HomeComponent implements OnInit {
   }
 
   addNew() {
-    // const dialogRef = this.dialog.open(AddDialogComponent, {
-    //   data: {issue: issue }
-    // });
+    const dialogRef = this.dialog.open(AddDialog, {
+      data: {displayName:  'Jun Kawa', userId: 'users/DPCt524ykyQsaWz5HTOPu9VO6No1'}
+    });
 
-    // dialogRef.afterClosed().subscribe(result => {
-    //   if (result === 1) {
-    //     // After dialog is closed we're doing frontend updates
-    //     // For add we're just pushing a new row inside DataService
-    //     this.exampleDatabase.dataChange.value.push(this.dataService.getDialogData());
-    //     this.refreshTable();
-    //   }
-    // });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        console.log(2, result);
+
+        const newReflection = this.db.collection('reflections').doc();
+        newReflection.set(result).then( () => {
+          this.getReflections();
+        });
+        
+      }
+    });
   }
 
   startEdit(i: number, id: number, title: string, state: string, url: string, created_at: string, updated_at: string) {

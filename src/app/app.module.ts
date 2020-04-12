@@ -13,11 +13,12 @@ import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
 import {HttpClient, HttpClientModule} from '@angular/common/http';
 import {NgxAuthFirebaseUIModule} from 'ngx-auth-firebaseui';
 import {TranslateHttpLoader} from '@ngx-translate/http-loader';
-import {FormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {MarkdownModule} from 'ngx-markdown';
 import {FlipComponent, FlipSection} from './flip/flip.component';
 import {HomeComponent} from './components/home/home.component';
 import {LandingComponent} from './components/landing/landing.component';
+import {AddDialog} from './dialogs/add/add.dialog';
 import {MatButtonModule} from '@angular/material/button';
 import {MatTabsModule} from '@angular/material/tabs';
 import {MatIconModule} from '@angular/material/icon';
@@ -27,6 +28,7 @@ import {MatPaginatorModule} from '@angular/material/paginator';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import {MatSortModule} from '@angular/material/sort';
+import { MatDialogModule } from '@angular/material/dialog';
 
 export const firebaseKey = {
     apiKey: "AIzaSyC4CqiByhbG-3r2RGRnJ_dzWNighzZi6j4",
@@ -53,7 +55,8 @@ export function createTranslateLoader(http: HttpClient) {
     FlipSection,
     FlipComponent,
     HomeComponent,
-    LandingComponent
+    LandingComponent,
+    AddDialog
   ],
   imports: [
     BrowserModule.withServerTransition({appId: 'serverApp'}),
@@ -80,6 +83,7 @@ export function createTranslateLoader(http: HttpClient) {
     MarkdownModule.forRoot({loader: HttpClient}),
     HttpClientModule,
     FormsModule,
+    ReactiveFormsModule,
     FlexLayoutModule,
     MatCardModule,
     MatButtonModule,
@@ -91,6 +95,7 @@ export function createTranslateLoader(http: HttpClient) {
     MatFormFieldModule,
     MatInputModule,
     MatSortModule,
+    MatDialogModule,
     NgxAuthFirebaseUIModule.forRoot(firebaseKey)
   ],
   providers: [],
