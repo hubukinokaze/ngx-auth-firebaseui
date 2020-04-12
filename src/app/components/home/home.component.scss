@@ -59,6 +59,43 @@
     max-width: 960px;
     flex-direction: column;
     align-items: center;
+
+    .filter-form {
+      width: 50%;
+
+      mat-form-field {
+        width: 100%;
+      }
+    }
+
+    .table-container {
+      width: 100%;
+
+      .reflection-table {
+        width: 100%;
+
+        td.mat-column-id {
+          width: 5%;
+        }
+
+        td.mat-column-chapter {
+          width: 5%;
+        }
+
+        td.mat-column-name {
+          width: 25%;
+        }
+
+        td.mat-column-source {
+          width: 10%;
+        }
+
+        td.mat-column-episode {
+          width: 5%;
+        }
+      }
+    }
+    
   }
 
   svg.material-icons {

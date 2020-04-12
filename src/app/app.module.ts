@@ -22,6 +22,11 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatTabsModule} from '@angular/material/tabs';
 import {MatIconModule} from '@angular/material/icon';
 import {MatToolbarModule} from '@angular/material/toolbar';
+import {MatTableModule} from '@angular/material/table';
+import {MatPaginatorModule} from '@angular/material/paginator';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatInputModule} from '@angular/material/input';
+import {MatSortModule} from '@angular/material/sort';
 
 export const firebaseKey = {
     apiKey: "AIzaSyC4CqiByhbG-3r2RGRnJ_dzWNighzZi6j4",
@@ -81,6 +86,11 @@ export function createTranslateLoader(http: HttpClient) {
     MatTabsModule,
     MatIconModule,
     MatToolbarModule,
+    MatTableModule,
+    MatPaginatorModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatSortModule,
     NgxAuthFirebaseUIModule.forRoot(firebaseKey)
   ],
   providers: [],
