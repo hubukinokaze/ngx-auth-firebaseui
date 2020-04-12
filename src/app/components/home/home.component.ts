@@ -1,19 +1,12 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { Router } from '@angular/router';
-import {MatPaginator} from '@angular/material/paginator';
-import {MatSort} from '@angular/material/sort';
-import {MatTableDataSource} from '@angular/material/table';
-
-export interface UserData {
-  id: string;
-  name: string;
-  color: string;
-  episode: string;
-  source: string;
-  content: string;
-  carpChapter: string;
-}
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
+import { map } from "rxjs/operators";
+import { User } from '../../classes/user/user.model';
+import { Reflection } from '../../classes/reflection/reflection.model';
 
 /** Constants used to fill up our data base. */
 const COLORS: string[] = [
@@ -34,24 +27,20 @@ export class HomeComponent implements OnInit {
 
   public title = 'Heavenly Parent Reflections';
 
-  public displayedColumns: string[] = ['id', 'chapter', 'name', 'source', 'episode', 'content'];
-  public dataSource: MatTableDataSource<UserData>;
+  public displayedColumns: string[] = ['chapter', 'name', 'source', 'episode', 'content', 'actions'];
+  public dataSource: MatTableDataSource<User>;
 
-  @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
-  @ViewChild(MatSort, {static: true}) sort: MatSort;
+  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
+  @ViewChild(MatSort, { static: true }) sort: MatSort;
 
   constructor(private db: AngularFirestore,
-    public router: Router) { 
-      // Create 100 users
-    const users = Array.from({length: 100}, (_, k) => this.createNewUser(k + 1));
+    public router: Router) {
+    // Create 100 users
 
-    // Assign the data to the data source for the table to render
-    this.dataSource = new MatTableDataSource(users);
-    }
+  }
 
   ngOnInit(): void {
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
+    this.getReflections()
   }
 
   applyFilter(event: Event) {
@@ -63,6 +52,38 @@ export class HomeComponent implements OnInit {
     }
   }
 
+  private async getReflections() {
+    this.db.collection<Reflection>('/reflections').get().pipe(
+      map(snapshot => {
+        let items = [];
+        snapshot.docs.map(async a => {
+          const data = a.data();
+          const id = a.id;
+          items.push(new Reflection(id, data.carpChapter, data.content, data.episode, data.source, data.userId.id, data.userId.path));
+        })
+        return items
+      })
+    ).subscribe((data) => {
+      for (let reflection of data) {
+        this.getUser(reflection.userURL).subscribe((userData) => reflection.displayName = userData.displayName);
+      }
+      console.log(data);
+      this.dataSource = new MatTableDataSource(data);
+      this.dataSource.paginator = this.paginator;
+      this.dataSource.sort = this.sort;
+    });
+  }
+
+  private getUser(userURL: string) {
+    return this.db.doc<User>(userURL).get().pipe(
+      map(snapshot => {
+        const data = snapshot.data();
+        const id = snapshot.id;
+        return new User(id, data.displayName, data.email, data.chapters, data.primaryRole, data.secondaryRole);
+      })
+    );
+  }
+
   printUser(event) {
     console.log('onSuccess event ->', event);
     this.goToPage('landing');
@@ -72,18 +93,56 @@ export class HomeComponent implements OnInit {
     this.router.navigate([link]);
   }
 
-  createNewUser(id: number): UserData {
-    const name = NAMES[Math.round(Math.random() * (NAMES.length - 1))] + ' ' +
-        NAMES[Math.round(Math.random() * (NAMES.length - 1))].charAt(0) + '.';
-  
-    return {
-      id: id.toString(),
-      name: name,
-      source: 'Godible',
-      episode: Math.round(Math.random() * 100).toString(),
-      color: COLORS[Math.round(Math.random() * (COLORS.length - 1))],
-      content: 'Just intellectually knowing the Word is only half the battle. We need to become the embodiment of the Word and take action. Just as how Jesus was the Word, we need to follow his footsteps. We need to teach others the Word with utmost sincerity and convey it with all our heart. In order to achieve that, studying the Word every day to nourish our spiritual body is essential.',
-      carpChapter: 'UCI'
-    };
+  addNew() {
+    // const dialogRef = this.dialog.open(AddDialogComponent, {
+    //   data: {issue: issue }
+    // });
+
+    // dialogRef.afterClosed().subscribe(result => {
+    //   if (result === 1) {
+    //     // After dialog is closed we're doing frontend updates
+    //     // For add we're just pushing a new row inside DataService
+    //     this.exampleDatabase.dataChange.value.push(this.dataService.getDialogData());
+    //     this.refreshTable();
+    //   }
+    // });
+  }
+
+  startEdit(i: number, id: number, title: string, state: string, url: string, created_at: string, updated_at: string) {
+    // this.id = id;
+    // // index row is used just for debugging proposes and can be removed
+    // this.index = i;
+    // console.log(this.index);
+    // const dialogRef = this.dialog.open(EditDialogComponent, {
+    //   data: {id: id, title: title, state: state, url: url, created_at: created_at, updated_at: updated_at}
+    // });
+
+    // dialogRef.afterClosed().subscribe(result => {
+    //   if (result === 1) {
+    //     // When using an edit things are little different, firstly we find record inside DataService by id
+    //     const foundIndex = this.exampleDatabase.dataChange.value.findIndex(x => x.id === this.id);
+    //     // Then you update that record using data from dialogData (values you enetered)
+    //     this.exampleDatabase.dataChange.value[foundIndex] = this.dataService.getDialogData();
+    //     // And lastly refresh table
+    //     this.refreshTable();
+    //   }
+    // });
+  }
+
+  deleteItem(i: number, id: number, title: string, state: string, url: string) {
+    // this.index = i;
+    // this.id = id;
+    // const dialogRef = this.dialog.open(DeleteDialogComponent, {
+    //   data: {id: id, title: title, state: state, url: url}
+    // });
+
+    // dialogRef.afterClosed().subscribe(result => {
+    //   if (result === 1) {
+    //     const foundIndex = this.exampleDatabase.dataChange.value.findIndex(x => x.id === this.id);
+    //     // for delete we use splice in order to remove single object from DataService
+    //     this.exampleDatabase.dataChange.value.splice(foundIndex, 1);
+    //     this.refreshTable();
+    //   }
+    // });
   }
 }

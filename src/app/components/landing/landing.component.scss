@@ -264,6 +264,20 @@
     width: 1920px;
   }
 
+  ::ng-deep ngx-auth-firebaseui {
+    div.actions > a > span {
+      position: relative;
+      visibility: hidden;
+    }
+
+    div.actions > a > span::after {
+      content: 'Go to reflections';
+      position: absolute;
+      left: -20px;
+      visibility: visible;
+    }
+  }
+
 
   /* Responsive Styles */
   @media screen and (max-width: 767px) {

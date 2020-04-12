@@ -62,7 +62,7 @@
       <mat-card-content>
         <ngx-auth-firebaseui [providers]="[providers.Google]"
                              [guestEnabled]="false"
-                             [goBackURL]="'home'"
+                             [goBackURL]="'../home'"
                              (onSuccess)="printUser($event)"
                              (onError)="printError($event)"
                              (selectedTabChange)="onTabChange($event)">
