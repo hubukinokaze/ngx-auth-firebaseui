@@ -29,7 +29,7 @@ export class AddDialog {
   }
 
   onNoClick(): void {
-    // emppty stuff
+    this.dialogRef.close(-1);
   }
 
   public confirmAdd(): void {

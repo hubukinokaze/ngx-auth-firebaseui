@@ -100,15 +100,14 @@ export class HomeComponent implements OnInit {
 
   addNew() {
     const dialogRef = this.dialog.open(AddDialog, {
-      data: {displayName:  'Jun Kawa', userId: 'users/DPCt524ykyQsaWz5HTOPu9VO6No1'}
+      data: {displayName:  'Jun Kawa', userId:  this.db.doc('/users/DPCt524ykyQsaWz5HTOPu9VO6No1').ref}
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      if (result) {
+      if (result != -1) {
         console.log(2, result);
 
-        const newReflection = this.db.collection('reflections').doc();
-        newReflection.set(result).then( () => {
+        const newReflection = this.db.collection('reflections').add(result).then( () => {
           this.getReflections();
         });
         

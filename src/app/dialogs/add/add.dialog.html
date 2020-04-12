@@ -44,10 +44,10 @@
         <!--Contains mat-hint for characters count and has maxLengt set-->
         <div class="form">
             <mat-form-field color="primary">
-                <input matInput #inputstateContent placeholder="Content" [(ngModel)]="data.content" name="content"
-                    maxlength="500" required>
+                <textarea matInput #inputstateContent placeholder="Content" [(ngModel)]="data.content" name="content"
+                    maxlength="1000" required></textarea>
                 <mat-error *ngIf="formControl.invalid">{{getErrorMessage()}}</mat-error>
-                <mat-hint align="end">{{inputstateContent.value?.length || 0}}/500</mat-hint>
+                <mat-hint align="end">{{inputstateContent.value?.length || 0}}/1000</mat-hint>
             </mat-form-field>
         </div>
 
