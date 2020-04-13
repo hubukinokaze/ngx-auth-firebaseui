@@ -19,6 +19,10 @@
         <mat-spinner></mat-spinner>
     </div>
 
+    <div class="new-message" *ngIf="!isLoading && !user.chapters">
+        <h3>New here? Please, fill out your profile before uploading reflections.</h3>
+    </div>
+
     <form class="filter-form" *ngIf="!isLoading">
         <mat-form-field>
             <mat-label>Filter</mat-label>
@@ -95,9 +99,11 @@
     </div>
 
 
+    <div class="spacer"></div>
+
     <!-- Footer -->
     <footer>
-        Have some feedback? Pray.
+        Have some feedback? Pray. | Hosted by me | Powered by indemnity conditions
     </footer>
 
     <svg alt="Gray Clouds Background" height="685.677" id="clouds" viewBox="0 0 2611.084 485.677" width="2611.084"

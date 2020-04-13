@@ -82,8 +82,10 @@ export class HomeComponent implements OnInit, OnDestroy {
         snapshot.docs.map(a => {
           const data = a.data();
           const id = a.id;
-          if (this.user.chapters.includes(data.carpChapter)) {
+          if (this.user.chapters && this.user.chapters.includes(data.carpChapter)) {
             items.push(new Reflection(id, data.carpChapter, data.content, data.episode, data.source, data.userId.id, data.userId.path));
+          } else if (!this.user.chapters) {
+            console.log('haha')
           }
         })
         return items
