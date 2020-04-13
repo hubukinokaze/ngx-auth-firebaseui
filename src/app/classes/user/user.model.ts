@@ -6,6 +6,7 @@ export class User {
     primaryRole: string;
     secondaryRole: string;
     darkMode: boolean;
+    photoURL: string;
 
     constructor(
         id: string,

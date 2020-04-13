@@ -96,6 +96,9 @@ export class HomeComponent implements OnInit, OnDestroy {
       }
 
       let sortBy = [{
+        prop: 'carpChapter',
+        direction: 1
+      }, {
         prop: 'source',
         direction: 1
       }, {

@@ -34,6 +34,8 @@ import { MatDialogModule } from '@angular/material/dialog';
 import {MatSelectModule} from '@angular/material/select';
 import {MatMenuModule} from '@angular/material/menu';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import {MatTooltipModule} from '@angular/material/tooltip';
+import { AvatarComponent } from './components/avatar/avatar.component';
 
 export const firebaseKey = {
     apiKey: "AIzaSyC4CqiByhbG-3r2RGRnJ_dzWNighzZi6j4",
@@ -63,7 +65,8 @@ export function createTranslateLoader(http: HttpClient) {
     LandingComponent,
     AddDialog,
     DeleteDialog,
-    EditDialog
+    EditDialog,
+    AvatarComponent
   ],
   imports: [
     BrowserModule.withServerTransition({appId: 'serverApp'}),
@@ -106,6 +109,7 @@ export function createTranslateLoader(http: HttpClient) {
     MatSelectModule,
     MatMenuModule,
     MatProgressSpinnerModule,
+    MatTooltipModule,
     NgxAuthFirebaseUIModule.forRoot(firebaseKey)
   ],
   providers: [],

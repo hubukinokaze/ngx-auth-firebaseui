@@ -15,16 +15,18 @@ export class UserService {
   private loginUser: LoginUser;
   private user$: Observable<LoginUser | null>;
   private userEvent$: EventEmitter<any>;
+  private loginUserEvent$: EventEmitter<any>;
 
   constructor(private auth: AngularFireAuth,
     public router: Router,
     private db: AngularFirestore) {
     this.userEvent$ = new EventEmitter();
+    this.loginUserEvent$ = new EventEmitter();
     this.user$ = this.auth.user;
 
     this.user$.subscribe((loginUser: LoginUser) => {
       this.loginUser = loginUser;
-      // this.displayNameInitials = loginUser ? this.getDisplayNameInitials(loginUser.displayName) : null;
+      this.loginUserEvent$.emit(this.loginUser);
     });
 
     this.auth.user.subscribe((data) => {
@@ -55,6 +57,10 @@ export class UserService {
 
   public getUserEvent() {
     return this.userEvent$;
+  }
+
+  public getLoginUserEvent() {
+    return this.loginUserEvent$;
   }
 
   public getUser(): User {
