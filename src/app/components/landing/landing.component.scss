@@ -139,18 +139,11 @@
     position: relative;
   }
 
-  svg#rocket {
-    width: 80px;
-    position: absolute;
-    left: -10px;
-    top: -24px;
-  }
 
-  svg#rocket-smoke {
-    height: 100vh;
+  svg#moon {
     position: absolute;
-    top: 10px;
-    right: 180px;
+    top: 25vh;
+    right: 20vw;
     z-index: -10;
   }
 
