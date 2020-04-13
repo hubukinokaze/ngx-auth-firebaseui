@@ -14,6 +14,7 @@ import { DeleteDialog } from '../../dialogs/delete/delete.dialog';
 import { EditDialog } from '../../dialogs/edit/edit.dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Subscription } from 'rxjs';
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-home',
@@ -23,6 +24,7 @@ import { Subscription } from 'rxjs';
 export class HomeComponent implements OnInit, OnDestroy {
 
   snackbarSubscription: Subscription;
+  userSubscription: Subscription;
 
   public title = 'Heavenly Parent Reflections';
   public user: User;
@@ -39,29 +41,28 @@ export class HomeComponent implements OnInit, OnDestroy {
     public auth: AngularFireAuth,
     public router: Router,
     public dialog: MatDialog,
-    public snackbar: MatSnackBar) {
-    // Create 100 users
-
+    public snackbar: MatSnackBar,
+    public userService: UserService) {
   }
 
   ngOnInit(): void {
-    this.auth.user.subscribe((data) => {
-      this.db.doc<User>('/users/' + data.uid).get().pipe(
-        map(snapshot => {
-          const data = snapshot.data();
-          const id = snapshot.id;
-          return new User(id, data.displayName, data.email, data.chapters, data.primaryRole, data.secondaryRole);
-        })
-      ).subscribe((userData) => {
+    if (this.userService.getUser()) {
+      this.user = this.userService.getUser();
+      this.getReflections();
+    } else {
+      this.userSubscription = this.userService.getUserEvent().subscribe((userData: User) => {
         this.user = userData;
-        this.getReflections()
+        this.getReflections();
       });
-    });
+    }
   }
 
   ngOnDestroy(): void {
     if (this.snackbarSubscription) {
       this.snackbarSubscription.unsubscribe();
+    }
+    if (this.userSubscription) {
+      this.userSubscription.unsubscribe();
     }
   }
 
@@ -93,8 +94,6 @@ export class HomeComponent implements OnInit, OnDestroy {
       for (let reflection of data) {
         this.getUser(reflection.userURL).subscribe((userData) => reflection.displayName = userData.displayName);
       }
-
-      // data.sort((a, b) => a.episode < b.episode ? -1 : a.episode > b.episode ? 1 : 0);
 
       let sortBy = [{
         prop: 'source',
@@ -130,6 +129,10 @@ export class HomeComponent implements OnInit, OnDestroy {
         return new User(id, data.displayName, data.email, data.chapters, data.primaryRole, data.secondaryRole);
       })
     );
+  }
+
+  public signOut(event) {
+    this.userService.setUser(null);
   }
 
   printUser(event) {
