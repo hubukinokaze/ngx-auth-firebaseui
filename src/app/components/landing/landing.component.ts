@@ -49,15 +49,15 @@ export class LandingComponent implements OnDestroy {
     console.log('onSuccess event ->', event);
     this.error = false;
     this.index = 2;
-    this.db
-            .doc('users/' + event.uid)
-            .update({ 
-              firstName: '',
-              lastName: '',
-              darkMode: false,
-              primaryRole: 'member',
-              secondaryRole: ''
-           });
+    // this.db
+    //         .doc('users/' + event.uid)
+    //         .update({ 
+    //           firstName: '',
+    //           lastName: '',
+    //           darkMode: false,
+    //           primaryRole: 'member',
+    //           secondaryRole: ''
+    //        });
 
     this.goToPage('home');
   }

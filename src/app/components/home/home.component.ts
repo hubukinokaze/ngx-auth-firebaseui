@@ -29,7 +29,8 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   public displayedColumns: string[] = ['chapter', 'name', 'source', 'episode', 'content', 'actions'];
   public dataSource: MatTableDataSource<Reflection>;
-  private tempReflectionArray: Array<Reflection>;
+  public tempReflectionArray: Array<Reflection>;
+  public isLoading: boolean = true;
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
@@ -112,6 +113,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       });
 
       this.tempReflectionArray = data;
+      this.isLoading = false;
 
       this.dataSource = new MatTableDataSource(data);
       this.dataSource.paginator = this.paginator;
@@ -150,6 +152,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.db.collection('reflections').add(result).then(() => {
+          this.isLoading = true;
           this.getReflections();
           this.snackbar.open('Added reflection!', 'OK', { duration: 5000 });
         }).catch((error) => {
@@ -172,6 +175,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.db.collection('reflections').doc(result.id).set(result).then(() => {
+          this.isLoading = true;
           this.getReflections();
           this.snackbar.open('Updated reflection!', 'OK', { duration: 5000 });
         }).catch((error) => {

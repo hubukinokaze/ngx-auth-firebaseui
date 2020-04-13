@@ -33,6 +33,7 @@ import {MatSortModule} from '@angular/material/sort';
 import { MatDialogModule } from '@angular/material/dialog';
 import {MatSelectModule} from '@angular/material/select';
 import {MatMenuModule} from '@angular/material/menu';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 
 export const firebaseKey = {
     apiKey: "AIzaSyC4CqiByhbG-3r2RGRnJ_dzWNighzZi6j4",
@@ -104,6 +105,7 @@ export function createTranslateLoader(http: HttpClient) {
     MatDialogModule,
     MatSelectModule,
     MatMenuModule,
+    MatProgressSpinnerModule,
     NgxAuthFirebaseUIModule.forRoot(firebaseKey)
   ],
   providers: [],
