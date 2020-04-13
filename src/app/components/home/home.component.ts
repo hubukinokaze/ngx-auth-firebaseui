@@ -11,6 +11,7 @@ import { User } from '../../classes/user/user.model';
 import { Reflection } from '../../classes/reflection/reflection.model';
 import { AddDialog } from '../../dialogs/add/add.dialog';
 import { DeleteDialog } from '../../dialogs/delete/delete.dialog';
+import { EditDialog } from '../../dialogs/edit/edit.dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Subscription } from 'rxjs';
 
@@ -137,7 +138,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.router.navigate([link]);
   }
 
-  addNew() {
+  public addNew() {
     const dialogRef = this.dialog.open(AddDialog, {
       data: {
         chapters: this.user.chapters,
@@ -148,9 +149,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        console.log(2, result);
-
-        const newReflection = this.db.collection('reflections').add(result).then(() => {
+        this.db.collection('reflections').add(result).then(() => {
           this.getReflections();
           this.snackbar.open('Added reflection!', 'OK', { duration: 5000 });
         }).catch((error) => {
@@ -161,28 +160,28 @@ export class HomeComponent implements OnInit, OnDestroy {
     });
   }
 
-  startEdit(i: number, id: number, title: string, state: string, url: string, created_at: string, updated_at: string) {
-    // this.id = id;
-    // // index row is used just for debugging proposes and can be removed
-    // this.index = i;
-    // console.log(this.index);
-    // const dialogRef = this.dialog.open(EditDialogComponent, {
-    //   data: {id: id, title: title, state: state, url: url, created_at: created_at, updated_at: updated_at}
-    // });
+  public startEdit(i: number, reflection: Reflection) {
+    const dialogRef = this.dialog.open(EditDialog, {
+      data: {
+        chapters: this.user.chapters,
+        ...reflection,
+        userId: this.db.doc('/users/' + this.user.id).ref
+      }
+    });
 
-    // dialogRef.afterClosed().subscribe(result => {
-    //   if (result === 1) {
-    //     // When using an edit things are little different, firstly we find record inside DataService by id
-    //     const foundIndex = this.exampleDatabase.dataChange.value.findIndex(x => x.id === this.id);
-    //     // Then you update that record using data from dialogData (values you enetered)
-    //     this.exampleDatabase.dataChange.value[foundIndex] = this.dataService.getDialogData();
-    //     // And lastly refresh table
-    //     this.refreshTable();
-    //   }
-    // });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.db.collection('reflections').doc(result.id).set(result).then(() => {
+          this.getReflections();
+          this.snackbar.open('Updated reflection!', 'OK', { duration: 5000 });
+        }).catch((error) => {
+          this.snackbar.open('Something went wrong...', 'OK', { duration: 5000 });
+        });
+      }
+    });
   }
 
-  deleteItem(i, reflection: Reflection) {
+  public deleteItem(i: number, reflection: Reflection) {
     console.log(i, reflection);
 
     const dialogRef = this.dialog.open(DeleteDialog, {
@@ -194,9 +193,7 @@ export class HomeComponent implements OnInit, OnDestroy {
         this.db.collection('reflections').doc(reflection.id).delete().then(() => {
           this.tempReflectionArray.splice(i, 1);
 
-          this.dataSource = new MatTableDataSource(this.tempReflectionArray);
-          this.dataSource.paginator = this.paginator;
-          this.dataSource.sort = this.sort;
+          this.refreshTable(this.tempReflectionArray);
 
           this.snackbar.open('Deleted reflection!', 'OK', { duration: 5000 });
         }).catch((error) => {
@@ -205,5 +202,11 @@ export class HomeComponent implements OnInit, OnDestroy {
         });
       }
     });
+  }
+
+  private refreshTable(data) {
+    this.dataSource = new MatTableDataSource(data);
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
   }
 }

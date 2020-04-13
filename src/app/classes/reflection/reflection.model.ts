@@ -2,17 +2,17 @@ export class Reflection {
     id: string;
     carpChapter: string;
     content: string;
-    episode: string;
+    episode: number;
     source: string;
     userId: string;
-    userURL; string;
+    userURL: string;
     displayName :string;
 
     constructor(
         id: string,
         carpChapter: string,
         content: string,
-        episode: string,
+        episode: number,
         source: string,
         userId: string,
         userURL: string

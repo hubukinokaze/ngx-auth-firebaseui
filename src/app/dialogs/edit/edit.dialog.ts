@@ -3,17 +3,17 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { FormControl, Validators } from '@angular/forms';
 
 @Component({
-  selector: 'app-add',
-  templateUrl: './add.dialog.html',
-  styleUrls: ['./add.dialog.scss']
+  selector: 'app-edit',
+  templateUrl: './edit.dialog.html',
+  styleUrls: ['./edit.dialog.scss']
 })
-export class AddDialog {
+export class EditDialog {
   public formControl = new FormControl('', [
     Validators.required
     // Validators.email,
   ]);
 
-  constructor(public dialogRef: MatDialogRef<AddDialog>,
+  constructor(public dialogRef: MatDialogRef<EditDialog>,
     @Inject(MAT_DIALOG_DATA) public data: any) {
     }
 
@@ -33,6 +33,7 @@ export class AddDialog {
 
   public confirmAdd(): void {
     delete this.data.chapters;
+    delete this.data.userURL;
     this.data.content = this.data.content.trim();
     this.data.source = this.data.source.trim();
     this.dialogRef.close(this.data);
