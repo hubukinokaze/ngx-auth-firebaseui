@@ -5,16 +5,23 @@
 
         <div class="form">
             <mat-form-field color="primary">
-                <input matInput #input class="form-control" placeholder="Carp Chapter" [(ngModel)]="data.carpChapter" name="chapter"
-                    required>
+                <mat-label>Carp Chapter</mat-label>
+                <mat-select class="form-control" [(ngModel)]="data.carpChapter" name="chapter" required >
+                    <mat-option>Clear</mat-option>
+                    <mat-option *ngFor="let carpChapter of data.chapters" [value]="carpChapter">
+                        {{carpChapter}}
+                    </mat-option>
+                </mat-select>
+                <!-- <input matInput #input class="form-control" placeholder="Carp Chapter" [(ngModel)]="data.carpChapter" name="chapter"
+                    required> -->
                 <mat-error *ngIf="formControl.invalid">{{getErrorMessage()}}</mat-error>
             </mat-form-field>
         </div>
 
         <div class="form">
             <mat-form-field color="primary">
-                <input matInput #input class="form-control" placeholder="Name" [(ngModel)]="data.displayName" name="displayName"
-                    disabled>
+                <input matInput #input class="form-control" placeholder="Name" [(ngModel)]="data.displayName"
+                    name="displayName" disabled>
             </mat-form-field>
         </div>
 
@@ -37,7 +44,8 @@
 
         <div class="form">
             <mat-form-field color="primary">
-                <input matInput type="number" class="form-control" placeholder="Episode" [(ngModel)]="data.episode" name="episode" required>
+                <input matInput type="number" class="form-control" placeholder="Episode" [(ngModel)]="data.episode"
+                    name="episode" required>
                 <mat-error *ngIf="formControl.invalid">{{getErrorMessage()}}</mat-error>
                 <mat-hint align="end">Must be a number</mat-hint>
             </mat-form-field>

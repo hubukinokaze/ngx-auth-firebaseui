@@ -15,7 +15,7 @@ export class AddDialog {
   ]);
 
   constructor(public dialogRef: MatDialogRef<AddDialog>,
-    @Inject(MAT_DIALOG_DATA) public data: Reflection) {
+    @Inject(MAT_DIALOG_DATA) public data: any) {
     }
 
   getErrorMessage() {

@@ -1,5 +1,6 @@
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
+import { AngularFireAuth } from '@angular/fire/auth';
 import { Router } from '@angular/router';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -33,6 +34,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   @ViewChild(MatSort, { static: true }) sort: MatSort;
 
   constructor(private db: AngularFirestore,
+    public auth: AngularFireAuth,
     public router: Router,
     public dialog: MatDialog,
     public snackbar: MatSnackBar) {
@@ -41,7 +43,19 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.getReflections()
+    console.log(this.auth.authState)
+    this.auth.user.subscribe((data) => {
+      this.db.doc<User>('/users/' + data.uid).get().pipe(
+        map(snapshot => {
+          const data = snapshot.data();
+          const id = snapshot.id;
+          return new User(id, data.displayName, data.email, data.chapters, data.primaryRole, data.secondaryRole);
+        })
+      ).subscribe((userData) => {
+        this.user = userData;
+        this.getReflections()
+      });
+    });
   }
 
   ngOnDestroy(): void {
@@ -66,7 +80,9 @@ export class HomeComponent implements OnInit, OnDestroy {
         snapshot.docs.map(a => {
           const data = a.data();
           const id = a.id;
-          items.push(new Reflection(id, data.carpChapter, data.content, data.episode, data.source, data.userId.id, data.userId.path));
+          if (this.user.chapters.includes(data.carpChapter)) {
+            items.push(new Reflection(id, data.carpChapter, data.content, data.episode, data.source, data.userId.id, data.userId.path));
+          }
         })
         return items
       })
@@ -123,7 +139,11 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   addNew() {
     const dialogRef = this.dialog.open(AddDialog, {
-      data: { displayName: 'Jun Kawa', userId: this.db.doc('/users/DPCt524ykyQsaWz5HTOPu9VO6No1').ref }
+      data: {
+        chapters: this.user.chapters,
+        displayName: this.user.displayName,
+        userId: this.db.doc('/users/' + this.user.id).ref
+      }
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -133,7 +153,7 @@ export class HomeComponent implements OnInit, OnDestroy {
         const newReflection = this.db.collection('reflections').add(result).then(() => {
           this.getReflections();
           this.snackbar.open('Added reflection!', 'OK', { duration: 5000 });
-        }).catch ( (error) => {
+        }).catch((error) => {
           this.snackbar.open('Something went wrong...', 'OK', { duration: 5000 });
         });
 
@@ -177,9 +197,9 @@ export class HomeComponent implements OnInit, OnDestroy {
           this.dataSource = new MatTableDataSource(this.tempReflectionArray);
           this.dataSource.paginator = this.paginator;
           this.dataSource.sort = this.sort;
-  
+
           this.snackbar.open('Deleted reflection!', 'OK', { duration: 5000 });
-        }).catch ( (error) => {
+        }).catch((error) => {
           console.log(error);
           this.snackbar.open('Something went wrong...', 'OK', { duration: 5000 });
         });
