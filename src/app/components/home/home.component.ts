@@ -45,7 +45,6 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    console.log(this.auth.authState)
     this.auth.user.subscribe((data) => {
       this.db.doc<User>('/users/' + data.uid).get().pipe(
         map(snapshot => {
