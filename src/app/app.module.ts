@@ -31,6 +31,7 @@ import {MatInputModule} from '@angular/material/input';
 import {MatSortModule} from '@angular/material/sort';
 import { MatDialogModule } from '@angular/material/dialog';
 import {MatSelectModule} from '@angular/material/select';
+import {MatMenuModule} from '@angular/material/menu';
 
 export const firebaseKey = {
     apiKey: "AIzaSyC4CqiByhbG-3r2RGRnJ_dzWNighzZi6j4",
@@ -100,6 +101,7 @@ export function createTranslateLoader(http: HttpClient) {
     MatSortModule,
     MatDialogModule,
     MatSelectModule,
+    MatMenuModule,
     NgxAuthFirebaseUIModule.forRoot(firebaseKey)
   ],
   providers: [],

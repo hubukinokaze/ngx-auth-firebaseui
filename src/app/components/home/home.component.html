@@ -64,15 +64,21 @@
                 </mat-header-cell>
 
                 <mat-cell *matCellDef="let row; let i=index;">
-                    <button mat-icon-button color="primary"
-                        (click)="startEdit(i, row.id, row.title, row.state, row.url, row.created_at, row.updated_at)">
-                        <mat-icon aria-label="Edit">edit</mat-icon>
+                    <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+                        <mat-icon>more_vert</mat-icon>
                     </button>
+                    <mat-menu #menu="matMenu">
+                        <button mat-menu-item
+                            (click)="startEdit(i, row.id, row.title, row.state, row.url, row.created_at, row.updated_at)">
+                            <mat-icon aria-label="Edit" color="primary">edit</mat-icon>
+                            <span>Edit</span>
+                        </button>
 
-                    <button mat-icon-button color="warn"
-                        (click)="deleteItem(i, row)">
-                        <mat-icon aria-label="Delete">delete</mat-icon>
-                    </button>
+                        <button mat-menu-item (click)="deleteItem(i, row)">
+                            <mat-icon aria-label="Delete" color="warn">delete</mat-icon>
+                            <span>Delete</span>
+                        </button>
+                    </mat-menu>
                 </mat-cell>
             </ng-container>
 
