@@ -19,6 +19,7 @@ import {FlipComponent, FlipSection} from './flip/flip.component';
 import {HomeComponent} from './components/home/home.component';
 import {LandingComponent} from './components/landing/landing.component';
 import {AddDialog} from './dialogs/add/add.dialog';
+import {DeleteDialog} from './dialogs/delete/delete.dialog';
 import {MatButtonModule} from '@angular/material/button';
 import {MatTabsModule} from '@angular/material/tabs';
 import {MatIconModule} from '@angular/material/icon';
@@ -56,7 +57,8 @@ export function createTranslateLoader(http: HttpClient) {
     FlipComponent,
     HomeComponent,
     LandingComponent,
-    AddDialog
+    AddDialog,
+    DeleteDialog
   ],
   imports: [
     BrowserModule.withServerTransition({appId: 'serverApp'}),

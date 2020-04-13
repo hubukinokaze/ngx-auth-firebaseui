@@ -1,51 +1,53 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { Router } from '@angular/router';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatDialog } from '@angular/material/dialog';
-// import {DataSource} from '@angular/cdk/collections';
 import { map } from "rxjs/operators";
 import { User } from '../../classes/user/user.model';
 import { Reflection } from '../../classes/reflection/reflection.model';
-import {AddDialog} from '../../dialogs/add/add.dialog';
-
-/** Constants used to fill up our data base. */
-const COLORS: string[] = [
-  'maroon', 'red', 'orange', 'yellow', 'olive', 'green', 'purple', 'fuchsia', 'lime', 'teal',
-  'aqua', 'blue', 'navy', 'black', 'gray'
-];
-const NAMES: string[] = [
-  'Maia', 'Asher', 'Olivia', 'Atticus', 'Amelia', 'Jack', 'Charlotte', 'Theodore', 'Isla', 'Oliver',
-  'Isabella', 'Jasper', 'Cora', 'Levi', 'Violet', 'Arthur', 'Mia', 'Thomas', 'Elizabeth'
-];
+import { AddDialog } from '../../dialogs/add/add.dialog';
+import { DeleteDialog } from '../../dialogs/delete/delete.dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent implements OnInit, OnDestroy {
+
+  snackbarSubscription: Subscription;
 
   public title = 'Heavenly Parent Reflections';
   public user: User;
 
   public displayedColumns: string[] = ['chapter', 'name', 'source', 'episode', 'content', 'actions'];
   public dataSource: MatTableDataSource<Reflection>;
+  private tempReflectionArray: Array<Reflection>;
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
 
   constructor(private db: AngularFirestore,
     public router: Router,
-    public dialog: MatDialog) {
+    public dialog: MatDialog,
+    public snackbar: MatSnackBar) {
     // Create 100 users
 
   }
 
   ngOnInit(): void {
     this.getReflections()
+  }
+
+  ngOnDestroy(): void {
+    if (this.snackbarSubscription) {
+      this.snackbarSubscription.unsubscribe();
+    }
   }
 
   applyFilter(event: Event) {
@@ -72,7 +74,28 @@ export class HomeComponent implements OnInit {
       for (let reflection of data) {
         this.getUser(reflection.userURL).subscribe((userData) => reflection.displayName = userData.displayName);
       }
-      console.log(data);
+
+      // data.sort((a, b) => a.episode < b.episode ? -1 : a.episode > b.episode ? 1 : 0);
+
+      let sortBy = [{
+        prop: 'source',
+        direction: 1
+      }, {
+        prop: 'episode',
+        direction: 1
+      }];
+
+      data.sort(function (a, b) {
+        let i = 0, result = 0;
+        while (i < sortBy.length && result === 0) {
+          result = sortBy[i].direction * (a[sortBy[i].prop].toString() < b[sortBy[i].prop].toString() ? -1 : (a[sortBy[i].prop].toString() > b[sortBy[i].prop].toString() ? 1 : 0));
+          i++;
+        }
+        return result;
+      });
+
+      this.tempReflectionArray = data;
+
       this.dataSource = new MatTableDataSource(data);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
@@ -100,17 +123,20 @@ export class HomeComponent implements OnInit {
 
   addNew() {
     const dialogRef = this.dialog.open(AddDialog, {
-      data: {displayName:  'Jun Kawa', userId:  this.db.doc('/users/DPCt524ykyQsaWz5HTOPu9VO6No1').ref}
+      data: { displayName: 'Jun Kawa', userId: this.db.doc('/users/DPCt524ykyQsaWz5HTOPu9VO6No1').ref }
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      if (result != -1) {
+      if (result) {
         console.log(2, result);
 
-        const newReflection = this.db.collection('reflections').add(result).then( () => {
+        const newReflection = this.db.collection('reflections').add(result).then(() => {
           this.getReflections();
+          this.snackbar.open('Added reflection!', 'OK', { duration: 5000 });
+        }).catch ( (error) => {
+          this.snackbar.open('Something went wrong...', 'OK', { duration: 5000 });
         });
-        
+
       }
     });
   }
@@ -136,20 +162,28 @@ export class HomeComponent implements OnInit {
     // });
   }
 
-  deleteItem(i: number, id: number, title: string, state: string, url: string) {
-    // this.index = i;
-    // this.id = id;
-    // const dialogRef = this.dialog.open(DeleteDialogComponent, {
-    //   data: {id: id, title: title, state: state, url: url}
-    // });
+  deleteItem(i, reflection: Reflection) {
+    console.log(i, reflection);
 
-    // dialogRef.afterClosed().subscribe(result => {
-    //   if (result === 1) {
-    //     const foundIndex = this.exampleDatabase.dataChange.value.findIndex(x => x.id === this.id);
-    //     // for delete we use splice in order to remove single object from DataService
-    //     this.exampleDatabase.dataChange.value.splice(foundIndex, 1);
-    //     this.refreshTable();
-    //   }
-    // });
+    const dialogRef = this.dialog.open(DeleteDialog, {
+      data: reflection
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.db.collection('reflections').doc(reflection.id).delete().then(() => {
+          this.tempReflectionArray.splice(i, 1);
+
+          this.dataSource = new MatTableDataSource(this.tempReflectionArray);
+          this.dataSource.paginator = this.paginator;
+          this.dataSource.sort = this.sort;
+  
+          this.snackbar.open('Deleted reflection!', 'OK', { duration: 5000 });
+        }).catch ( (error) => {
+          console.log(error);
+          this.snackbar.open('Something went wrong...', 'OK', { duration: 5000 });
+        });
+      }
+    });
   }
 }

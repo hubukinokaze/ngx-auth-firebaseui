@@ -37,7 +37,9 @@
 
         <div class="form">
             <mat-form-field color="primary">
-                <input matInput placeholder="Episode" [(ngModel)]="data.episode" name="episode">
+                <input matInput type="number" class="form-control" placeholder="Episode" [(ngModel)]="data.episode" name="episode" required>
+                <mat-error *ngIf="formControl.invalid">{{getErrorMessage()}}</mat-error>
+                <mat-hint align="end">Must be a number</mat-hint>
             </mat-form-field>
         </div>
 

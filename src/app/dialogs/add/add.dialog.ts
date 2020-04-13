@@ -29,7 +29,7 @@ export class AddDialog {
   }
 
   onNoClick(): void {
-    this.dialogRef.close(-1);
+    this.dialogRef.close();
   }
 
   public confirmAdd(): void {
