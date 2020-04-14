@@ -62,18 +62,31 @@ export class AvatarComponent implements OnInit {
 
   public openProfile() {
     this.tempUser = cloneDeep(this.user);
+    this.tempUser.photoURL = this.loginUser?.photoURL;
     const dialogRef = this.dialog.open(ProfileDialog, {
       data: this.tempUser
     });
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        console.log(result);
-        // this.db.collection('reflections').doc(result.id).set(result).then(() => {
-        //   this.snackbar.open('Updated profile!', 'OK', { duration: 5000 });
-        // }).catch((error) => {
-        //   this.snackbar.open('Something went wrong...', 'OK', { duration: 5000 });
-        // });
+        delete result.photoURL;
+        this.user = {...result};
+        const temp = {
+            displayName: this.user.displayName,
+            primaryRole: this.user.primaryRole,
+            secondaryRole: this.user.secondaryRole,
+            chapters: this.user.chapters
+        }
+
+        if (!temp.secondaryRole) {
+          delete temp.secondaryRole
+        }
+
+        this.db.collection('users').doc(result.id).update(temp).then(() => {
+          this.snackbar.open('Updated profile!', 'OK', { duration: 5000 });
+        }).catch((error) => {
+          this.snackbar.open('Something went wrong...', 'OK', { duration: 5000 });
+        });
       }
     });
   }
