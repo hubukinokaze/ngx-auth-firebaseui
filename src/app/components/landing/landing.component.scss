@@ -271,6 +271,20 @@
     }
   }
 
+  ::ng-deep ngx-auth-firebaseui-email-confirmation {
+      button.go-back-button > span {
+        position: relative;
+        visibility: hidden;
+      }
+
+      button.go-back-button > span::after {
+        content: 'Refresh page';
+        position: absolute;
+        left: -15px;
+        visibility: visible;
+      }
+  }
+
 
   /* Responsive Styles */
   @media screen and (max-width: 767px) {

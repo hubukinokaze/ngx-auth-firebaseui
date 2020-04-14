@@ -67,9 +67,9 @@ export class LandingComponent implements OnDestroy {
     this.error = true;
 
     this.snackbar.open(event.message, 'OK', {duration: 5000});
-    this.auth.auth.signInWithRedirect(new firebase.auth.GoogleAuthProvider()).then( (cred) => {
-      console.log(11, cred);
-    }).catch((error) => console.log(error));
+    // this.auth.auth.signInWithRedirect(new firebase.auth.GoogleAuthProvider()).then( (cred) => {
+    //   console.log(11, cred);
+    // }).catch((error) => console.log(error));
     // this.snackbar.open(event.message, 'OK', {duration: 5000});
   }
 

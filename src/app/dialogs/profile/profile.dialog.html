@@ -2,6 +2,7 @@
     <div fxLayout="row">
         <button *ngIf="data" [style.background-image]="'url(' + data?.photoURL + ')'" aria-label="Open x-positioned menu"
             mat-mini-fab style="background-size: cover">
+            <span *ngIf="!data?.photoURL">{{displayNameInitials || ''}}</span>
         </button>
         <h3 mat-dialog-title>{{data.displayName}}'s Profile</h3>
     </div>

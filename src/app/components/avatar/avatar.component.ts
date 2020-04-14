@@ -25,6 +25,7 @@ export class AvatarComponent implements OnInit {
   public user: User;
   public loginUser: LoginUser;
   public tempUser: User;
+  public displayNameInitials: string;
 
   constructor(private db: AngularFirestore,
     public auth: AngularFireAuth,
@@ -36,9 +37,11 @@ export class AvatarComponent implements OnInit {
   ngOnInit(): void {
     if (this.userService.getUser()) {
       this.user = this.userService.getUser();
+      this.displayNameInitials = this.getDisplayNameInitials(this.user.displayName);
     } else {
       this.userSubscription = this.userService.getUserEvent().subscribe((userData: User) => {
         this.user = userData;
+        this.displayNameInitials = this.getDisplayNameInitials(this.user.displayName);
       });
     }
 
@@ -70,12 +73,12 @@ export class AvatarComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         delete result.photoURL;
-        this.user = {...result};
+        this.user = { ...result };
         const temp = {
-            displayName: this.user.displayName,
-            primaryRole: this.user.primaryRole,
-            secondaryRole: this.user.secondaryRole,
-            chapters: this.user.chapters
+          displayName: this.user.displayName,
+          primaryRole: this.user.primaryRole,
+          secondaryRole: this.user.secondaryRole,
+          chapters: this.user.chapters
         }
 
         if (!temp.secondaryRole) {
@@ -92,11 +95,20 @@ export class AvatarComponent implements OnInit {
     });
   }
 
+  private getDisplayNameInitials(displayName: string | null): string | null {
+    if (!displayName) {
+      return null;
+    }
+    const initialsRegExp: RegExpMatchArray = displayName.match(/\b\w/g) || [];
+    const initials = ((initialsRegExp.shift() || '') + (initialsRegExp.pop() || '')).toUpperCase();
+    return initials;
+  }
+
   public signOut(): void {
-    this.auth.auth.signOut().then( (event) => {
+    this.auth.auth.signOut().then((event) => {
       this.router.navigate(['/landing']);
       this.userService.setUser(null);
     });
-    
+
   }
 }

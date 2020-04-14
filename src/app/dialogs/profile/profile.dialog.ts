@@ -11,6 +11,7 @@ export class ProfileDialog {
   public primaryRoles: Array<string>;
   public secondaryRoles: Array<string>;
   public carpChapters: Array<string>;
+  public displayNameInitials: string;
   public maxChapters: number = 2;
   private maxChaptersReached: boolean = false;
 
@@ -23,11 +24,11 @@ export class ProfileDialog {
     @Inject(MAT_DIALOG_DATA) public data: any) {
 
       this.primaryRoles = [
-        'Admin',
-        'Boss',
-        'Regional Leader',
+        'Member',
         'President',
-        'Member'
+        'Regional Leader',
+        'Boss',
+        'Admin'
       ];
 
       this.secondaryRoles = [
@@ -50,6 +51,8 @@ export class ProfileDialog {
       if (this.data?.chapters?.length >this. maxChapters) {
         this.maxChaptersReached = true;
       }
+
+      this.displayNameInitials = this.getDisplayNameInitials(this.data.displayName);
   }
 
   public chaptersChanged(event) {
@@ -66,6 +69,15 @@ export class ProfileDialog {
       return true;
     }
     return false;
+  }
+
+  private getDisplayNameInitials(displayName: string | null): string | null {
+    if (!displayName) {
+      return null;
+    }
+    const initialsRegExp: RegExpMatchArray = displayName.match(/\b\w/g) || [];
+    const initials = ((initialsRegExp.shift() || '') + (initialsRegExp.pop() || '')).toUpperCase();
+    return initials;
   }
 
   getErrorMessage() {

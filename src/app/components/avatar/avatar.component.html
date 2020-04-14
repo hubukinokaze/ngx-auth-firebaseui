@@ -5,7 +5,7 @@
         aria-label="Open x-positioned menu"
         mat-mini-fab
         style="background-size: cover">
-  <span *ngIf="!loginUser?.photoURL">{{user.displayName || ''}}</span>
+  <span *ngIf="!loginUser?.photoURL">{{displayNameInitials || ''}}</span>
 </button>
 
 <mat-menu #posXMenu="matMenu" class="before" xPosition="before">
