@@ -68,11 +68,28 @@ export class UserService {
   }
 
   public setUser(user: User | null) {
-    this.user.displayName = user.displayName;
-    this.user.primaryRole = user.primaryRole;
-    this.user.secondaryRole = user.secondaryRole;
-    this.user.chapters = user.chapters;
+    if (user) {
+      this.user.displayName = user.displayName;
+      this.user.primaryRole = user.primaryRole;
+      this.user.secondaryRole = user.secondaryRole;
+      this.user.chapters = user.chapters;
+    } else {
+      this.user = null;
+    }
+    
     this.userEvent$.next(this.user);
+  }
+
+  public setLoginUser(user: LoginUser | null) {
+    if (user) {
+      this.loginUser.displayName = user.displayName;
+      this.loginUser.email = user.email;
+      this.loginUser.photoURL = user.photoURL;
+    } else {
+      this.loginUser = null;
+    }
+    
+    this.loginUserEvent$.next(this.loginUser);
   }
 
   public getLoginUser(): LoginUser {

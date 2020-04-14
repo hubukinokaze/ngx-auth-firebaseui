@@ -108,6 +108,7 @@ export class AvatarComponent implements OnInit {
     this.auth.auth.signOut().then((event) => {
       this.router.navigate(['/landing']);
       this.userService.setUser(null);
+      this.userService.setLoginUser(null);
     });
 
   }

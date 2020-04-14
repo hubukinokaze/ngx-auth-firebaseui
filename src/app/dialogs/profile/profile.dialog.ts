@@ -61,7 +61,6 @@ export class ProfileDialog {
     } else {
       this.maxChaptersReached = false;
     }
-    console.log(event)
   }
 
   public disableChapter(carpChapter) {
