@@ -1,4 +1,4 @@
-import { Injectable, Component, EventEmitter } from '@angular/core';
+import { Injectable, EventEmitter } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { User as LoginUser } from 'firebase';
 import { Observable } from 'rxjs';
@@ -68,7 +68,11 @@ export class UserService {
   }
 
   public setUser(user: User | null) {
-    this.user = user;
+    this.user.displayName = user.displayName;
+    this.user.primaryRole = user.primaryRole;
+    this.user.secondaryRole = user.secondaryRole;
+    this.user.chapters = user.chapters;
+    this.userEvent$.next(this.user);
   }
 
   public getLoginUser(): LoginUser {

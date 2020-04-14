@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { Router } from '@angular/router';
@@ -83,6 +83,7 @@ export class AvatarComponent implements OnInit {
         }
 
         this.db.collection('users').doc(result.id).update(temp).then(() => {
+          this.userService.setUser(this.user);
           this.snackbar.open('Updated profile!', 'OK', { duration: 5000 });
         }).catch((error) => {
           this.snackbar.open('Something went wrong...', 'OK', { duration: 5000 });

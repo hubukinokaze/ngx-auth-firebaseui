@@ -41,14 +41,14 @@ export class ProfileDialog {
         'UCI'
       ];
 
-      if (this.data?.chapters?.length >this. maxChapters) {
-        this.maxChaptersReached = true;
-      }
-
       if (!this.data.primaryRole || this.data.primaryRole == 'Member' || this.data.primaryRole == 'President') {
         this.maxChapters = 0;
       } else if (this.data.primaryRole == 'Admin' || this.data.primaryRole == 'Boss') {
         this.maxChapters = 99
+      }
+
+      if (this.data?.chapters?.length >this. maxChapters) {
+        this.maxChaptersReached = true;
       }
   }
 
