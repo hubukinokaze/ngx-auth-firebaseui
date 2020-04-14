@@ -33,6 +33,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   public dataSource: MatTableDataSource<Reflection>;
   public tempReflectionArray: Array<Reflection>;
   public isLoading: boolean = true;
+  private loadLimit: number = 50;
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
@@ -48,10 +49,20 @@ export class HomeComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     if (this.userService.getUser()) {
       this.user = this.userService.getUser();
+      if (this.user.primaryRole == 'Admin' || this.user.primaryRole == 'Boss') {
+        this.loadLimit = 100;
+      } else if (this.user.primaryRole == 'Member') {
+        this.loadLimit = 25;
+      }
       this.getReflections();
     } else {
       this.userSubscription = this.userService.getUserEvent().subscribe((userData: User) => {
         this.user = userData;
+        if (this.user.primaryRole == 'Admin' || this.user.primaryRole == 'Boss') {
+          this.loadLimit = 100;
+        } else if (this.user.primaryRole == 'Member') {
+          this.loadLimit = 25;
+        }
         this.getReflections();
       });
     }
@@ -76,21 +87,20 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   private getReflections() {
-    this.db.collection<Reflection>('/reflections').get().pipe(
-      map(snapshot => {
-        let items = [];
-        snapshot.docs.map(a => {
-          const data = a.data();
-          const id = a.id;
-          if (this.user.chapters && this.user.chapters.includes(data.carpChapter)) {
-            items.push(new Reflection(id, data.carpChapter, data.content, data.episode, data.source, data.userId.id, data.userId.path));
-          } else if (!this.user.chapters) {
-            // do something if no chapters
-          }
-        })
-        return items
+    this.db.collection("reflections").ref.orderBy("created", "desc").where("carpChapter", "in", this.user.chapters).limit(10).get().then((snapshot) => {
+      let items = [];
+      snapshot.docs.map(a => {
+        const data = a.data();
+        const id = a.id;
+        if (this.user.chapters && this.user.chapters.includes(data.carpChapter)) {
+          items.push(new Reflection(id, data.carpChapter, data.content, data.episode, data.source, data.userId.id, data.userId.path, data.created, data.modified));
+        } else if (!this.user.chapters) {
+          // do something if no chapters
+        }
       })
-    ).subscribe((data) => {
+      return items;
+
+    }).then((data) => {
       for (let reflection of data) {
         this.getUser(reflection.userURL).subscribe((userData) => reflection.displayName = userData.displayName);
       }
@@ -103,7 +113,7 @@ export class HomeComponent implements OnInit, OnDestroy {
         direction: 1
       }, {
         prop: 'episode',
-        direction: 1
+        direction: -1
       }];
 
       data.sort(function (a, b) {
@@ -121,7 +131,53 @@ export class HomeComponent implements OnInit, OnDestroy {
       this.dataSource = new MatTableDataSource(data);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
-    });
+    })
+    // this.db.collection<Reflection>('/reflections').get().pipe(
+    //   map(snapshot => {
+    //     let items = [];
+    //     snapshot.docs.map(a => {
+    //       const data = a.data();
+    //       const id = a.id;
+    //       if (this.user.chapters && this.user.chapters.includes(data.carpChapter)) {
+    //         items.push(new Reflection(id, data.carpChapter, data.content, data.episode, data.source, data.userId.id, data.userId.path, data.created, data.modified));
+    //       } else if (!this.user.chapters) {
+    //         // do something if no chapters
+    //       }
+    //     })
+    //     return items
+    //   })
+    // ).subscribe((data) => {
+    //   for (let reflection of data) {
+    //     this.getUser(reflection.userURL).subscribe((userData) => reflection.displayName = userData.displayName);
+    //   }
+
+    //   let sortBy = [{
+    //     prop: 'carpChapter',
+    //     direction: 1
+    //   }, {
+    //     prop: 'source',
+    //     direction: 1
+    //   }, {
+    //     prop: 'episode',
+    //     direction: 1
+    //   }];
+
+    //   data.sort(function (a, b) {
+    //     let i = 0, result = 0;
+    //     while (i < sortBy.length && result === 0) {
+    //       result = sortBy[i].direction * (a[sortBy[i].prop].toString() < b[sortBy[i].prop].toString() ? -1 : (a[sortBy[i].prop].toString() > b[sortBy[i].prop].toString() ? 1 : 0));
+    //       i++;
+    //     }
+    //     return result;
+    //   });
+
+    //   this.tempReflectionArray = data;
+    //   this.isLoading = false;
+
+    //   this.dataSource = new MatTableDataSource(data);
+    //   this.dataSource.paginator = this.paginator;
+    //   this.dataSource.sort = this.sort;
+    // });
   }
 
   private getUser(userURL: string) {
@@ -158,9 +214,11 @@ export class HomeComponent implements OnInit, OnDestroy {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.db.collection('reflections').add(result).then(() => {
+        result.created = new Date();
+        this.db.collection('reflections').add(result).then((newResult) => {
           this.isLoading = true;
-          this.getReflections();
+          console.log(newResult);
+          // this.getReflections();
           this.snackbar.open('Added reflection!', 'OK', { duration: 5000 });
         }).catch((error) => {
           this.snackbar.open('Something went wrong...', 'OK', { duration: 5000 });
@@ -181,9 +239,11 @@ export class HomeComponent implements OnInit, OnDestroy {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.db.collection('reflections').doc(result.id).set(result).then(() => {
+        result.modified = new Date();
+        this.db.collection('reflections').doc(result.id).set(result).then((newResult) => {
           this.isLoading = true;
-          this.getReflections();
+          console.log(newResult);
+          // this.getReflections();
           this.snackbar.open('Updated reflection!', 'OK', { duration: 5000 });
         }).catch((error) => {
           this.snackbar.open('Something went wrong...', 'OK', { duration: 5000 });

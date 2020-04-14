@@ -7,6 +7,8 @@ export class Reflection {
     userId: string;
     userURL: string;
     displayName :string;
+    created: Date;
+    modified: Date;
 
     constructor(
         id: string,
@@ -15,7 +17,9 @@ export class Reflection {
         episode: number,
         source: string,
         userId: string,
-        userURL: string
+        userURL: string,
+        created: Date,
+        modified: Date
     ) {
         this.id = id;
         this.carpChapter = carpChapter;
@@ -24,5 +28,7 @@ export class Reflection {
         this.source = source;
         this.userId = userId;
         this.userURL = userURL;
+        this.created = created;
+        this.modified = modified;
     }
 }

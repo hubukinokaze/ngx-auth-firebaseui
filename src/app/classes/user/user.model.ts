@@ -7,6 +7,8 @@ export class User {
     secondaryRole: string;
     darkMode: boolean;
     photoURL: string;
+    created: Date;
+    modified: Date;
 
     constructor(
         id: string,
