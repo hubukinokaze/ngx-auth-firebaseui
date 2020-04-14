@@ -1,0 +1,64 @@
+<div class="container">
+    <div fxLayout="row">
+        <button *ngIf="data" [style.background-image]="'url(' + data?.photoURL + ')'" aria-label="Open x-positioned menu"
+            mat-mini-fab style="background-size: cover">
+        </button>
+        <h3 mat-dialog-title>{{data.displayName}}'s Profile</h3>
+    </div>
+
+    <form class="mat-dialog-content" (ngSubmit)="submit" #formControl="ngForm">
+
+        <div class="form">
+            <mat-form-field color="primary">
+                <input matInput #inputstateName class="form-control" placeholder="Name" [(ngModel)]="data.displayName"
+                    name="displayName" required>
+                    <mat-error *ngIf="formControl.invalid">{{getErrorMessage()}}</mat-error>
+                <mat-hint align="end">{{inputstateName.value?.length || 0}}/50</mat-hint>
+            </mat-form-field>
+        </div>
+
+        <div class="form">
+            <mat-form-field color="primary">
+                <mat-label>Primary Role</mat-label>
+                <mat-select class="form-control" [(ngModel)]="data.primaryRole" name="primaryRole"
+                [disabled]="data?.primaryRole == 'Admin' || data?.primaryRole == 'Boss'" required>
+                    <mat-option>Clear</mat-option>
+                    <mat-option *ngFor="let role of primaryRoles" [value]="role" [disabled]="checkRole(role)">
+                        {{role}}
+                    </mat-option>
+                </mat-select>
+                <mat-error *ngIf="formControl.invalid">{{getErrorMessage()}}</mat-error>
+            </mat-form-field>
+        </div>
+
+        <div class="form">
+            <mat-form-field color="primary">
+                <mat-label>Secondary Role</mat-label>
+                <mat-select class="form-control" [(ngModel)]="data.secondaryRole" name="secondaryRole" disabled>
+                    <mat-option>Clear</mat-option>
+                    <mat-option *ngFor="let role of secondaryRoles" [value]="role">
+                        {{role}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+
+        <div class="form">
+            <mat-form-field color="primary">
+                <mat-label>Carp Chapter</mat-label>
+                <mat-select class="form-control" [(ngModel)]="data.chapters" name="chapter" (selectionChange)="chaptersChanged($event.value)" multiple required>
+                    <mat-option *ngFor="let carpChapter of carpChapters" [value]="carpChapter" [disabled]="disableChapter(carpChapter)">
+                        {{carpChapter}}
+                    </mat-option>
+                </mat-select>
+                <mat-error *ngIf="formControl.invalid">{{getErrorMessage()}}</mat-error>
+                <mat-hint align="end">{{data.chapters?.length || 0}}/{{maxChapters+1}}</mat-hint>
+            </mat-form-field>
+        </div>
+
+        <div mat-dialog-actions>
+            <button mat-button [type]="submit" [disabled]="!formControl.valid" (click)="confirmAdd()">Save</button>
+            <button mat-button (click)="onNoClick()" tabindex="-1" color="warn">Cancel</button>
+        </div>
+    </form>
+</div>

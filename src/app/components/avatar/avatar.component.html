@@ -10,26 +10,21 @@
 
 <mat-menu #posXMenu="matMenu" class="before" xPosition="before">
   <div fxLayout="row" fxLayout.xs="column" style="padding-left: 10px; padding-right: 10px">
-    <button [style.background-image]="'url(' + loginUser?.photoURL + ')'"
-            mat-fab
-            style="background-size: cover">
-      <span *ngIf="!loginUser?.photoURL">{{user.displayName || ''}}</span>
-    </button>
     <div fxLayout="column" style="padding-left: 10px; padding-right: 10px">
       <strong mat-card-title>{{user?.displayName}}</strong>
       <em mat-card-subtitle style="font-style: italic">{{loginUser?.email}}</em>
+      <em mat-card-subtitle>{{user?.primaryRole || 'Member'}}</em>
     </div>
   </div>
 
   <div fxFlex="100" fxLayout="column">
-    <!-- <div *ngFor="let menuItem of links" class="links-menu">
-      <button (click)="menuItem?.callback()" mat-menu-item>
-        <mat-icon>{{menuItem?.icon}}</mat-icon>
-        {{menuItem?.text}}</button>
-    </div> -->
-    <button (click)="openProfile()" color="primary" fxLayoutAlign="center" mat-raised-button>Profile
+    <button (click)="openProfile()" color="primary" fxLayoutAlign="center" mat-raised-button>
+        <mat-icon aria-label="Profile">whatshot</mat-icon>
+        <span>Profile</span>
     </button>
-    <button (click)="signOut()" color="warn" fxLayoutAlign="center" mat-raised-button>Sign Out
+    <button (click)="signOut()" color="warn" fxLayoutAlign="center" mat-raised-button>
+        <mat-icon aria-label="Sign Out">hotel</mat-icon>
+        <span>Sign Out</span>
     </button>
   </div>
 </mat-menu>

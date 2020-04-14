@@ -21,6 +21,7 @@ import {LandingComponent} from './components/landing/landing.component';
 import {AddDialog} from './dialogs/add/add.dialog';
 import {DeleteDialog} from './dialogs/delete/delete.dialog';
 import {EditDialog} from './dialogs/edit/edit.dialog';
+import {ProfileDialog} from './dialogs/profile/profile.dialog';
 import {MatButtonModule} from '@angular/material/button';
 import {MatTabsModule} from '@angular/material/tabs';
 import {MatIconModule} from '@angular/material/icon';
@@ -66,6 +67,7 @@ export function createTranslateLoader(http: HttpClient) {
     AddDialog,
     DeleteDialog,
     EditDialog,
+    ProfileDialog,
     AvatarComponent
   ],
   imports: [

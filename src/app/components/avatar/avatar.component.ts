@@ -3,12 +3,13 @@ import { AngularFirestore } from '@angular/fire/firestore';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
-import { map } from "rxjs/operators";
-import { User } from '../../classes/user/user.model';
+import { User } from 'src/app/classes/user/user.model';
 import { User as LoginUser } from 'firebase';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Subscription } from 'rxjs';
 import { UserService } from 'src/app/services/user.service';
+import { ProfileDialog } from 'src/app/dialogs/profile/profile.dialog';
+import * as cloneDeep from 'lodash/cloneDeep';
 
 @Component({
   selector: 'app-avatar',
@@ -23,6 +24,7 @@ export class AvatarComponent implements OnInit {
 
   public user: User;
   public loginUser: LoginUser;
+  public tempUser: User;
 
   constructor(private db: AngularFirestore,
     public auth: AngularFireAuth,
@@ -59,7 +61,21 @@ export class AvatarComponent implements OnInit {
   }
 
   public openProfile() {
-    //nothing
+    this.tempUser = cloneDeep(this.user);
+    const dialogRef = this.dialog.open(ProfileDialog, {
+      data: this.tempUser
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        console.log(result);
+        // this.db.collection('reflections').doc(result.id).set(result).then(() => {
+        //   this.snackbar.open('Updated profile!', 'OK', { duration: 5000 });
+        // }).catch((error) => {
+        //   this.snackbar.open('Something went wrong...', 'OK', { duration: 5000 });
+        // });
+      }
+    });
   }
 
   public signOut(): void {
