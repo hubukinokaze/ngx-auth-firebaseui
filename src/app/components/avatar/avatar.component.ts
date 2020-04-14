@@ -61,6 +61,9 @@ export class AvatarComponent implements OnInit {
     if (this.userSubscription) {
       this.userSubscription.unsubscribe();
     }
+    if (this.loginUserSubscription) {
+      this.loginUserSubscription.unsubscribe();
+    }
   }
 
   public openProfile() {

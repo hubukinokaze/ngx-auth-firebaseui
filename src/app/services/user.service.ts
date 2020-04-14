@@ -34,9 +34,9 @@ export class UserService {
         this.db.doc<User>('/users/' + data.uid).get().pipe(
           map(snapshot => {
             if (snapshot) {
-              const data = snapshot.data();
+              const user = snapshot.data();
               const id = snapshot.id;
-              return new User(id, data.displayName, data.email, data.chapters, data.primaryRole, data.secondaryRole);
+              return new User(id, user.displayName, user.email, user.chapters, user.primaryRole, user.secondaryRole);
             }
             
           })

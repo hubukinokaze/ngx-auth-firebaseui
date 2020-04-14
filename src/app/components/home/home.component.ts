@@ -49,18 +49,18 @@ export class HomeComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     if (this.userService.getUser()) {
       this.user = this.userService.getUser();
-      if (this.user.primaryRole == 'Admin' || this.user.primaryRole == 'Boss') {
+      if (this.user?.primaryRole == 'Admin' || this.user?.primaryRole == 'Boss') {
         this.loadLimit = 100;
-      } else if (this.user.primaryRole == 'Member') {
+      } else if (this.user?.primaryRole == 'Member') {
         this.loadLimit = 25;
       }
       this.getReflections();
     } else {
       this.userSubscription = this.userService.getUserEvent().subscribe((userData: User) => {
         this.user = userData;
-        if (this.user.primaryRole == 'Admin' || this.user.primaryRole == 'Boss') {
+        if (this.user?.primaryRole == 'Admin' || this.user?.primaryRole == 'Boss') {
           this.loadLimit = 100;
-        } else if (this.user.primaryRole == 'Member') {
+        } else if (this.user?.primaryRole == 'Member') {
           this.loadLimit = 25;
         }
         this.getReflections();
@@ -87,7 +87,8 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   private getReflections() {
-    this.db.collection("reflections").ref.orderBy("created", "desc").where("carpChapter", "in", this.user.chapters).limit(10).get().then((snapshot) => {
+    const chapterList = (!this.user.chapters) ? [""] : this.user.chapters;
+    this.db.collection("reflections").ref.orderBy("created", "desc").where("carpChapter", "in", chapterList).limit(10).get().then((snapshot) => {
       let items = [];
       snapshot.docs.map(a => {
         const data = a.data();
@@ -217,8 +218,12 @@ export class HomeComponent implements OnInit, OnDestroy {
         result.created = new Date();
         this.db.collection('reflections').add(result).then((newResult) => {
           this.isLoading = true;
-          console.log(newResult);
-          // this.getReflections();
+          result.id = newResult.id;
+          result.userURL = `users/${this.user.id}`;
+
+          this.tempReflectionArray.push(result);
+          this.refreshTable(this.tempReflectionArray);
+
           this.snackbar.open('Added reflection!', 'OK', { duration: 5000 });
         }).catch((error) => {
           this.snackbar.open('Something went wrong...', 'OK', { duration: 5000 });
@@ -233,7 +238,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       data: {
         chapters: this.user.chapters,
         ...reflection,
-        userId: this.db.doc('/users/' + this.user.id).ref
+        userId: this.db.doc(`/users/${this.user.id}`).ref
       }
     });
 
@@ -242,8 +247,10 @@ export class HomeComponent implements OnInit, OnDestroy {
         result.modified = new Date();
         this.db.collection('reflections').doc(result.id).set(result).then((newResult) => {
           this.isLoading = true;
-          console.log(newResult);
-          // this.getReflections();
+          result.userURL = `users/${this.user.id}`;
+          
+          this.tempReflectionArray.splice(i, 1, result);
+          this.refreshTable(this.tempReflectionArray);
           this.snackbar.open('Updated reflection!', 'OK', { duration: 5000 });
         }).catch((error) => {
           this.snackbar.open('Something went wrong...', 'OK', { duration: 5000 });
@@ -253,8 +260,6 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   public deleteItem(i: number, reflection: Reflection) {
-    console.log(i, reflection);
-
     const dialogRef = this.dialog.open(DeleteDialog, {
       data: reflection
     });
@@ -279,5 +284,6 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.dataSource = new MatTableDataSource(data);
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
+    this.isLoading = false;
   }
 }
