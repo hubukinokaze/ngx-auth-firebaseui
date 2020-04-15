@@ -87,7 +87,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   private getReflections() {
-    const chapterList = (!this.user.chapters) ? [""] : this.user.chapters;
+    const chapterList = (!this.user?.chapters) ? [""] : this.user.chapters;
     this.db.collection("reflections").ref.orderBy("created", "desc").where("carpChapter", "in", chapterList).limit(10).get().then((snapshot) => {
       let items = [];
       snapshot.docs.map(a => {
@@ -101,9 +101,11 @@ export class HomeComponent implements OnInit, OnDestroy {
       })
       return items;
 
-    }).then((data) => {
+    }).then(async (data) => {
       for (let reflection of data) {
-        this.getUser(reflection.userURL).subscribe((userData) => reflection.displayName = userData.displayName);
+        // this.getUser(reflection.userURL).subscribe((userData) => reflection.displayName = userData.displayName);
+        const userData: User = await this.getUser(reflection.userURL);
+        reflection.displayName = userData.displayName
       }
 
       let sortBy = [{
@@ -181,14 +183,27 @@ export class HomeComponent implements OnInit, OnDestroy {
     // });
   }
 
-  private getUser(userURL: string) {
-    return this.db.doc<User>(userURL).get().pipe(
-      map(snapshot => {
-        const data = snapshot.data();
-        const id = snapshot.id;
-        return new User(id, data.displayName, data.email, data.chapters, data.primaryRole, data.secondaryRole);
-      })
-    );
+  private async getUser(userURL: string) {
+    const storedUsers = this.userService.getStoredUsers();
+    
+    if (storedUsers[userURL]) {
+      return storedUsers[userURL];
+    }
+
+    return await this.db.doc<User>(userURL).ref.get().then( (snapshot) => {
+      const data = snapshot.data();
+      this.userService.addStoredUsers(userURL, data);
+      return new User(data.uid, data.displayName, data.email, data.chapters, data.primaryRole, data.secondaryRole);
+    });
+
+    // return this.db.doc<User>(userURL).get().pipe(
+    //   map(snapshot => {
+    //     const data = snapshot.data();
+    //     const id = snapshot.id;
+    //     this.userService.addStoredUsers(id, data);
+    //     return new User(id, data.displayName, data.email, data.chapters, data.primaryRole, data.secondaryRole);
+    //   })
+    // );
   }
 
   public signOut(event) {

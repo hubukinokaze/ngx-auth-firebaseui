@@ -46,7 +46,7 @@ export class LandingComponent implements OnDestroy {
   }
 
   printUser(event) {
-    console.log('onSuccess event ->', event);
+    // console.log('onSuccess event ->', event);
     this.error = false;
     this.index = 2;
     // this.db
@@ -63,7 +63,7 @@ export class LandingComponent implements OnDestroy {
   }
 
   printError(event) {
-    console.error('onError event --> ', event);
+    // console.error('onError event --> ', event);
     this.error = true;
 
     this.snackbar.open(event.message, 'OK', {duration: 5000});

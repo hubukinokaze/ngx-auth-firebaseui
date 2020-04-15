@@ -13,6 +13,7 @@ import { Router } from '@angular/router';
 export class UserService {
   private user: User;
   private loginUser: LoginUser;
+  private storedUsers: any = {};
   private user$: Observable<LoginUser | null>;
   private userEvent$: EventEmitter<any>;
   private loginUserEvent$: EventEmitter<any>;
@@ -94,5 +95,13 @@ export class UserService {
 
   public getLoginUser(): LoginUser {
     return this.loginUser;
+  }
+
+  public getStoredUsers() {
+    return this.storedUsers;
+  }
+
+  public addStoredUsers(id: string, data: any) {
+    this.storedUsers[id] = data;
   }
 }
