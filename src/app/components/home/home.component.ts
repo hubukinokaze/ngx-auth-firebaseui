@@ -103,9 +103,10 @@ export class HomeComponent implements OnInit, OnDestroy {
 
     }).then(async (data) => {
       for (let reflection of data) {
-        // this.getUser(reflection.userURL).subscribe((userData) => reflection.displayName = userData.displayName);
         const userData: User = await this.getUser(reflection.userURL);
-        reflection.displayName = userData.displayName
+        if (userData.displayName) {
+          reflection.displayName = userData.displayName
+        }
       }
 
       let sortBy = [{

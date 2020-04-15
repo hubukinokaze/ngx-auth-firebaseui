@@ -37,11 +37,11 @@ export class AvatarComponent implements OnInit {
   ngOnInit(): void {
     if (this.userService.getUser()) {
       this.user = this.userService.getUser();
-      this.displayNameInitials = this.getDisplayNameInitials(this.user.displayName);
+      this.displayNameInitials = this.getDisplayNameInitials(this.user?.displayName);
     } else {
       this.userSubscription = this.userService.getUserEvent().subscribe((userData: User) => {
         this.user = userData;
-        this.displayNameInitials = this.getDisplayNameInitials(this.user.displayName);
+        this.displayNameInitials = this.getDisplayNameInitials(this.user?.displayName);
       });
     }
 

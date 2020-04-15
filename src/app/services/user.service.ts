@@ -32,12 +32,18 @@ export class UserService {
 
     this.auth.user.subscribe((data) => {
       if (data) {
-        this.db.doc<User>('/users/' + data.uid).get().pipe(
+        this.db.doc<User>('/users/' + data.uid).valueChanges().pipe(
           map(snapshot => {
             if (snapshot) {
-              const user = snapshot.data();
-              const id = snapshot.id;
-              return new User(id, user.displayName, user.email, user.chapters, user.primaryRole, user.secondaryRole);
+              if (!snapshot) {
+                throw "user is undefined";
+              } else if (this.user) {
+                throw "user exists";
+              }
+
+              const user = snapshot;
+
+              return new User(user.uid, user.displayName, user.email, user.chapters, user.primaryRole, user.secondaryRole);
             }
             
           })
@@ -46,7 +52,31 @@ export class UserService {
             this.user = userData;
             this.userEvent$.emit(this.user);
           }
+        }, (error) => {
+          console.log(error)
         });
+        // this.db.doc<User>('/users/' + data.uid).get().pipe(
+        //   map(snapshot => {
+        //     if (snapshot) {
+        //       const user = snapshot.data();
+        //       const id = snapshot.id;
+
+        //       if (!user) {
+        //         throw "user is undefined"
+        //       }
+
+        //       return new User(id, user.displayName, user.email, user.chapters, user.primaryRole, user.secondaryRole);
+        //     }
+            
+        //   })
+        // ).subscribe((userData) => {
+        //   if (userData) {
+        //     this.user = userData;
+        //     this.userEvent$.emit(this.user);
+        //   }
+        // }, (error) => {
+        //   console.log(error)
+        // });
       } else {
         this.router.navigate(['/landing']);
       }
