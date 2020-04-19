@@ -30,7 +30,7 @@ export class UserService {
       this.loginUserEvent$.emit(this.loginUser);
     });
 
-    this.auth.user.subscribe((data) => {
+    this.user$.subscribe((data) => {
       if (data) {
         this.db.doc<User>('/users/' + data.uid).valueChanges().pipe(
           map(snapshot => {
@@ -38,7 +38,7 @@ export class UserService {
               if (!snapshot) {
                 throw "user is undefined";
               } else if (this.user) {
-                throw "user exists";
+                // throw "user exists";
               }
 
               const user = snapshot;
@@ -55,28 +55,6 @@ export class UserService {
         }, (error) => {
           console.log(error)
         });
-        // this.db.doc<User>('/users/' + data.uid).get().pipe(
-        //   map(snapshot => {
-        //     if (snapshot) {
-        //       const user = snapshot.data();
-        //       const id = snapshot.id;
-
-        //       if (!user) {
-        //         throw "user is undefined"
-        //       }
-
-        //       return new User(id, user.displayName, user.email, user.chapters, user.primaryRole, user.secondaryRole);
-        //     }
-            
-        //   })
-        // ).subscribe((userData) => {
-        //   if (userData) {
-        //     this.user = userData;
-        //     this.userEvent$.emit(this.user);
-        //   }
-        // }, (error) => {
-        //   console.log(error)
-        // });
       } else {
         this.router.navigate(['/landing']);
       }
@@ -105,7 +83,9 @@ export class UserService {
       this.user.secondaryRole = user.secondaryRole;
       this.user.chapters = user.chapters;
     } else {
+      this.loginUser = null;
       this.user = null;
+      this.auth.auth.signOut();
     }
     
     this.userEvent$.next(this.user);
@@ -118,6 +98,8 @@ export class UserService {
       this.loginUser.photoURL = user.photoURL;
     } else {
       this.loginUser = null;
+      this.user = null;
+      this.auth.auth.signOut();
     }
     
     this.loginUserEvent$.next(this.loginUser);
