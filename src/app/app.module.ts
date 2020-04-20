@@ -36,6 +36,7 @@ import {MatSelectModule} from '@angular/material/select';
 import {MatMenuModule} from '@angular/material/menu';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {MatTooltipModule} from '@angular/material/tooltip';
+import {MatDividerModule} from '@angular/material/divider';
 import { AvatarComponent } from './components/avatar/avatar.component';
 
 export const firebaseKey = {
@@ -112,6 +113,7 @@ export function createTranslateLoader(http: HttpClient) {
     MatMenuModule,
     MatProgressSpinnerModule,
     MatTooltipModule,
+    MatDividerModule,
     NgxAuthFirebaseUIModule.forRoot(firebaseKey)
   ],
   providers: [],

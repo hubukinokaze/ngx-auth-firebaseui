@@ -1,7 +1,27 @@
 .container {
     display: flex;
     flex-direction: column;
-    min-width: 450px;
+    width: 30em;
+    ::ng-deep.mat-dialog-content {
+      display:flex;
+      flex-flow: column;
+      justify-content: space-around;
+      max-height: 100%;
+      height: 100%;
+      overflow: initial;
+    }
+
+    .title-container {
+      align-items: center;
+
+      .profile-title {
+        font-size: 1.2em;
+        font-weight: 600;
+        margin-left: 0.5em;
+      }
+    }
+
+    
   }
   
   .container > * {
@@ -22,3 +42,14 @@
     min-height: 100px;
   }
   
+
+  @media screen and (max-width: 575px) {
+    .container {
+      width: 18em;
+      height: 65vh;
+    }
+
+    ::ng-deep.full-width-dialog {
+      max-width: 95vw !important;
+    }
+  }

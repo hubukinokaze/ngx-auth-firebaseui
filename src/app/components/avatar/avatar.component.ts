@@ -70,7 +70,8 @@ export class AvatarComponent implements OnInit {
     this.tempUser = cloneDeep(this.user);
     this.tempUser.photoURL = this.loginUser?.photoURL;
     const dialogRef = this.dialog.open(ProfileDialog, {
-      data: this.tempUser
+      data: this.tempUser,
+      panelClass: 'full-width-dialog'
     });
 
     dialogRef.afterClosed().subscribe(result => {

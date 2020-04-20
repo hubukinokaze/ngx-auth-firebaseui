@@ -1,0 +1,32 @@
+::ng-deep.mat-menu-panel {
+    width: 17em;
+    max-width: none !important;
+  }
+
+  ::ng-deep.mat-menu-content:not(:empty) {
+      padding: 1em 0 0.1em 0 !important;
+  }
+
+  .user-info-container {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      height: 7em;
+      justify-content: space-between;
+  }
+
+  .menu-container {
+    align-items: flex-start;
+    border-top: 1px solid lavender;
+    margin-top: 1em;
+
+    mat-icon {
+        margin-right: 0.5em;
+    }
+
+      button {
+          width: 100%;
+          display: flex;
+      }
+  }

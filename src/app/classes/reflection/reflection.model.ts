@@ -9,6 +9,7 @@ export class Reflection {
     displayName :string;
     created: Date;
     modified: Date;
+    expanded: boolean;
 
     constructor(
         id: string,

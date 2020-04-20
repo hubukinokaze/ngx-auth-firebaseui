@@ -8,21 +8,21 @@
   <span *ngIf="!loginUser?.photoURL">{{displayNameInitials || ''}}</span>
 </button>
 
-<mat-menu #posXMenu="matMenu" class="before" xPosition="before">
+<mat-menu #posXMenu="matMenu">
   <div fxLayout="row" fxLayout.xs="column" style="padding-left: 10px; padding-right: 10px">
-    <div fxLayout="column" style="padding-left: 10px; padding-right: 10px">
+    <div class="user-info-container">
       <strong mat-card-title>{{user?.displayName}}</strong>
       <em mat-card-subtitle style="font-style: italic">{{loginUser?.email}}</em>
-      <em mat-card-subtitle>{{user?.primaryRole || 'Member'}}</em>
+      <em mat-card-subtitle>-- {{user?.primaryRole || 'Member'}} --</em>
     </div>
   </div>
 
-  <div fxFlex="100" fxLayout="column">
-    <button (click)="openProfile()" color="primary" fxLayoutAlign="center" mat-raised-button>
+  <div class="menu-container" fxFlex="100" fxLayout="column">
+    <button (click)="openProfile()" color="primary" mat-button>
         <mat-icon aria-label="Profile">whatshot</mat-icon>
         <span>Profile</span>
     </button>
-    <button (click)="signOut()" color="warn" fxLayoutAlign="center" mat-raised-button>
+    <button (click)="signOut()" color="warn" mat-button>
         <mat-icon aria-label="Sign Out">hotel</mat-icon>
         <span>Sign Out</span>
     </button>
