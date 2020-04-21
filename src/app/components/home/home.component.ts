@@ -234,7 +234,8 @@ export class HomeComponent implements OnInit, OnDestroy {
         chapters: this.user.chapters,
         displayName: this.user.displayName,
         userId: this.db.doc('/users/' + this.user.id).ref
-      }
+      },
+      panelClass: 'full-width-dialog'
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -263,7 +264,8 @@ export class HomeComponent implements OnInit, OnDestroy {
         chapters: this.user.chapters,
         ...reflection,
         userId: this.db.doc(`/users/${this.user.id}`).ref
-      }
+      },
+      panelClass: 'full-width-dialog'
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -285,7 +287,8 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   public deleteItem(i: number, reflection: Reflection) {
     const dialogRef = this.dialog.open(DeleteDialog, {
-      data: reflection
+      data: reflection,
+      panelClass: 'full-width-dialog'
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -309,5 +312,12 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
     this.isLoading = false;
+  }
+
+  public toggleRow(row: Reflection, x: Element["classList"]) {
+    if (!!x && x.contains('small-screen-on')) {
+      return !row.expanded;
+    }
+    return row.expanded;
   }
 }

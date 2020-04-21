@@ -5,7 +5,7 @@ import { FormControl, Validators } from '@angular/forms';
 @Component({
   selector: 'app-add',
   templateUrl: './add.dialog.html',
-  styleUrls: ['./add.dialog.scss']
+  styleUrls: ['./add.dialog.scss'],
 })
 export class AddDialog {
   public formControl = new FormControl('', [

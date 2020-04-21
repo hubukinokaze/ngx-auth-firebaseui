@@ -99,8 +99,8 @@
             <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
             <!-- <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr> -->
 
-            <tr mat-row *matRowDef="let row; columns: displayedColumns;" matRipple class="element-row"
-                [class.expanded]="row.expanded" (click)="row.expanded = !row.expanded"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;" matRipple class="element-row" [ngClass.xs]="'small-screen-on'"
+                [class.expanded]="row.expanded" (click)="row.expanded = toggleRow(row, $event.target.parentElement.classList)"></tr>
 
             <tr mat-row *matRowDef="let detail; columns: ['expandedDetail']"
                 [@detailExpand]="detail.expanded ? 'expanded' : 'collapsed'" style="overflow: hidden">
