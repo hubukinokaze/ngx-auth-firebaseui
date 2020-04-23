@@ -235,7 +235,7 @@ export class HomeComponent implements OnInit, OnDestroy {
         displayName: this.user.displayName,
         userId: this.db.doc('/users/' + this.user.id).ref
       },
-      panelClass: 'full-width-dialog'
+      panelClass: ['full-width-dialog', 'add-dialog']
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -265,7 +265,7 @@ export class HomeComponent implements OnInit, OnDestroy {
         ...reflection,
         userId: this.db.doc(`/users/${this.user.id}`).ref
       },
-      panelClass: 'full-width-dialog'
+      panelClass: ['full-width-dialog', 'edit-dialog']
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -288,7 +288,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   public deleteItem(i: number, reflection: Reflection) {
     const dialogRef = this.dialog.open(DeleteDialog, {
       data: reflection,
-      panelClass: 'full-width-dialog'
+      panelClass: ['full-width-dialog', 'delete-dialog']
     });
 
     dialogRef.afterClosed().subscribe(result => {

@@ -1,7 +1,70 @@
 /* You can add global styles to this file, and also import other style files */
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+html,
+body {
+    height: 100%;
+}
+body {
+    margin: 0;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+}
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+html,
+body {
+    height: 100%;
+}
+body {
+    margin: 0;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+// .add-dialog .mat-dialog-container,
+// .edit-dialog .mat-dialog-container,
+// .delete-dialog .mat-dialog-container {
+//     max-height: 100%;
+// }
+
+.mat-dialog-content {
+    height: calc(100% - 44px);
+    display: flex !important;
+    flex-flow: column;
+    justify-content: space-between;
+
+    .content-form {
+        flex-grow: 1;
+        overflow: auto;
+    }
+}
+
+.mat-dialog-actions {
+    padding: 0px !important;
+    margin: 0px !important;
+}
+
+.full-width-dialog.add-dialog,
+.full-width-dialog.edit-dialog,
+.full-width-dialog.profile-dialog {
+    max-width: 70vw !important;
+    width: 35em;
+    height: 65vh;
+    min-height: 320px;
+}
+
+.full-width-dialog.delete-dialog {
+    max-width: 70vw !important;
+    width: 35em;
+    height: 50vh;
+    min-height: 320px;
+}
+
+@media screen and (max-width: 575px) {
+    .full-width-dialog,
+    .full-width-dialog.add-dialog,
+    .full-width-dialog.edit-dialog,
+    .full-width-dialog.delete-dialog,
+    .full-width-dialog.profile-dialog {
+        max-width: 90vw !important;
+        width: 100% !important;
+        height: 80vh !important;
+    }
+}

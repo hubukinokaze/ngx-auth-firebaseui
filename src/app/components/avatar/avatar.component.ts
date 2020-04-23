@@ -71,7 +71,7 @@ export class AvatarComponent implements OnInit {
     this.tempUser.photoURL = this.loginUser?.photoURL;
     const dialogRef = this.dialog.open(ProfileDialog, {
       data: this.tempUser,
-      panelClass: 'full-width-dialog'
+      panelClass: ['full-width-dialog', 'profile-dialog']
     });
 
     dialogRef.afterClosed().subscribe(result => {

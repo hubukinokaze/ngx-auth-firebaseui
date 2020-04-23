@@ -1,17 +1,15 @@
 <div class="container">
     <h3 mat-dialog-title>Are you sure?</h3>
-    <div mat-dialog-content>
-      <p></p>
-      CARP Chapter: {{data.carpChapter}}
-      <p></p>
-      Name: {{data.displayName}}
-      <p></p>
-      Source: {{data.source}}
-      <p></p>
-      Episode: {{data.episode}}
-      <p></p>
-      Content: {{data.content}}
-      <p></p>
+    <div mat-dialog-content class="delete-info">
+      <p>CARP Chapter: {{data.carpChapter}}</p>
+      
+      <p>Name: {{data.displayName}}</p>
+      
+      <p>Source: {{data.source}}</p>
+      
+      <p>Episode: {{data.episode}}</p>
+      
+      <p class="content-form">Content: {{data.content}}</p>
     </div>
   
     <div mat-dialog-actions>
