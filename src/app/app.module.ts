@@ -18,6 +18,8 @@ import {MarkdownModule} from 'ngx-markdown';
 import {FlipComponent, FlipSection} from './flip/flip.component';
 import {HomeComponent} from './components/home/home.component';
 import {LandingComponent} from './components/landing/landing.component';
+import {ManageUsersComponent} from './components/manage-users/manage-users.component';
+import {PageNotFoundComponent} from './components/page-not-found/page-not-found.component';
 import {AddDialog} from './dialogs/add/add.dialog';
 import {DeleteDialog} from './dialogs/delete/delete.dialog';
 import {EditDialog} from './dialogs/edit/edit.dialog';
@@ -69,7 +71,9 @@ export function createTranslateLoader(http: HttpClient) {
     DeleteDialog,
     EditDialog,
     ProfileDialog,
-    AvatarComponent
+    AvatarComponent,
+    ManageUsersComponent,
+    PageNotFoundComponent
   ],
   imports: [
     BrowserModule.withServerTransition({appId: 'serverApp'}),

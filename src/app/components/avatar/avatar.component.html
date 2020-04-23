@@ -22,6 +22,10 @@
         <mat-icon aria-label="Profile">whatshot</mat-icon>
         <span>Profile</span>
     </button>
+    <button (click)="goToManageUsers()" color="primary" mat-button *ngIf="isAdmin">
+      <mat-icon aria-label="Profile">vpn_key</mat-icon>
+      <span>Manage Users</span>
+  </button>
     <button (click)="signOut()" color="warn" mat-button>
         <mat-icon aria-label="Sign Out">hotel</mat-icon>
         <span>Sign Out</span>

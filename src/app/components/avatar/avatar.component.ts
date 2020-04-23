@@ -26,6 +26,7 @@ export class AvatarComponent implements OnInit {
   public loginUser: LoginUser;
   public tempUser: User;
   public displayNameInitials: string;
+  public isAdmin: boolean = false;
 
   constructor(private db: AngularFirestore,
     public auth: AngularFireAuth,
@@ -36,12 +37,10 @@ export class AvatarComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.userService.getUser()) {
-      this.user = this.userService.getUser();
-      this.displayNameInitials = this.getDisplayNameInitials(this.user?.displayName);
+      this.setup(this.userService.getUser());
     } else {
       this.userSubscription = this.userService.getUserEvent().subscribe((userData: User) => {
-        this.user = userData;
-        this.displayNameInitials = this.getDisplayNameInitials(this.user?.displayName);
+        this.setup(userData);
       });
     }
 
@@ -51,6 +50,15 @@ export class AvatarComponent implements OnInit {
       this.loginUserSubscription = this.userService.getLoginUserEvent().subscribe((userData: LoginUser) => {
         this.loginUser = userData;
       });
+    }
+  }
+
+  private setup(userData) {
+    this.user = userData;
+    this.displayNameInitials = this.getDisplayNameInitials(this.user?.displayName);
+
+    if (this.user.primaryRole != 'Member') {
+      this.isAdmin = true;
     }
   }
 
@@ -115,5 +123,9 @@ export class AvatarComponent implements OnInit {
       this.userService.setLoginUser(null);
     });
 
+  }
+
+  public goToManageUsers() {
+    this.router.navigate(['/users']);
   }
 }
