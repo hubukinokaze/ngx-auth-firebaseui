@@ -59,6 +59,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       } else if (this.user?.primaryRole == 'Member') {
         this.loadLimit = 25;
       }
+      
       this.getReflections();
     } else {
       this.userSubscription = this.userService.getUserEvent().subscribe((userData: User) => {
@@ -92,8 +93,11 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   private getReflections() {
-    const chapterList = (!this.user?.chapters) ? [""] : this.user.chapters;
-    this.db.collection("reflections").ref.orderBy("created", "desc").where("carpChapter", "in", chapterList).limit(10).get().then((snapshot) => {
+    let chapterList = [""]
+    if (this.user.chapters && this.user.chapters.length > 0) {
+      chapterList = this.user.chapters;
+    }
+    this.db.collection("reflections").ref.orderBy("created", "desc").where("carpChapter", "in", chapterList).limit(this.loadLimit).get().then((snapshot) => {
       let items = [];
       snapshot.docs.map(a => {
         const data = a.data();
@@ -289,6 +293,29 @@ export class HomeComponent implements OnInit, OnDestroy {
         });
       }
     });
+  }
+
+  private whatRank(privilege: string): number {
+    if (privilege == 'Admin') {
+      return 5;
+    } else if (privilege == 'Boss') {
+      return 4;
+    } else if (privilege == 'Regional Leader') {
+      return 3;
+    } else if (privilege == 'President') {
+     return 2;
+    }
+    return 0;
+  }
+
+  public actionPriviledge(row: Reflection): boolean {
+    if (this.user.primaryRole == 'Member' || !this.user.primaryRole) {
+      return false;
+    }
+
+    const userRank = this.whatRank(this.user.primaryRole);
+
+    return userRank > 0;
   }
 
   private refreshTable(data) {

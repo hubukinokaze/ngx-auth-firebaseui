@@ -7,25 +7,15 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatDialog } from '@angular/material/dialog';
 import { User } from 'src/app/classes/user/user.model';
 import { Reflection } from 'src/app/classes/reflection/reflection.model';
-import { AddDialog } from 'src/app/dialogs/add/add.dialog';
-import { DeleteDialog } from 'src/app/dialogs/delete/delete.dialog';
-import { EditDialog } from 'src/app/dialogs/edit/edit.dialog';
+import { ProfileDialog } from 'src/app/dialogs/profile/profile.dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Subscription } from 'rxjs';
 import { UserService } from 'src/app/services/user.service';
-import { animate, state, style, transition, trigger } from '@angular/animations';
 
 @Component({
   selector: 'app-manage-users',
   templateUrl: './manage-users.component.html',
-  styleUrls: ['./manage-users.component.scss'],
-  animations: [
-    trigger('detailExpand', [
-      state('collapsed', style({ height: '0px', minHeight: '0', display: 'none' })),
-      state('expanded', style({ height: '*', display: 'table-row' })),
-      transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
-    ]),
-  ]
+  styleUrls: ['./manage-users.component.scss']
 })
 export class ManageUsersComponent implements OnInit, OnDestroy {
 
@@ -39,7 +29,6 @@ export class ManageUsersComponent implements OnInit, OnDestroy {
   public dataSource: MatTableDataSource<User>;
   public tempUserArray: Array<User>;
   public isLoading: boolean = true;
-  private loadLimit: number = 50;
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
@@ -53,20 +42,10 @@ export class ManageUsersComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     if (this.userService.getUser()) {
       this.user = this.userService.getUser();
-      if (this.user?.primaryRole == 'Admin' || this.user?.primaryRole == 'Boss') {
-        this.loadLimit = 100;
-      } else if (this.user?.primaryRole == 'Member') {
-        this.loadLimit = 25;
-      }
       this.getUsers();
     } else {
       this.userSubscription = this.userService.getUserEvent().subscribe((userData: User) => {
         this.user = userData;
-        if (this.user?.primaryRole == 'Admin' || this.user?.primaryRole == 'Boss') {
-          this.loadLimit = 100;
-        } else if (this.user?.primaryRole == 'Member') {
-          this.loadLimit = 25;
-        }
         this.getUsers();
       });
     }
@@ -91,9 +70,14 @@ export class ManageUsersComponent implements OnInit, OnDestroy {
   }
 
   private getUsers() {
-    const chapterList = (!this.user?.chapters) ? [""] : this.user.chapters;
-    // this.db.collection("users").ref.orderBy("displayName", "desc").where("chapters", "array-contains", chapterList).limit(10).get().then((snapshot) => {
-    this.db.collection("users").ref.orderBy("displayName", "desc").limit(100).get().then((snapshot) => {
+    if (this.whatRank(this.user.primaryRole) == 0 ) {
+      this.goToPage('home');
+    }
+    let chapterList = [""];
+    if (this.user?.chapters && this.user.chapters.length > 0) {
+      chapterList = this.user.chapters;
+    }
+    this.db.collection("users").ref.orderBy("displayName", "desc").where("chapters", 'array-contains-any',chapterList).limit(100).get().then((snapshot) => {
       let items = [];
       snapshot.docs.map(a => {
         const data = a.data();
@@ -133,45 +117,74 @@ export class ManageUsersComponent implements OnInit, OnDestroy {
     });
   }
 
-  private async getUser(userURL: string) {
-    const storedUsers = this.userService.getStoredUsers();
-
-    if (storedUsers[userURL]) {
-      return storedUsers[userURL];
-    }
-
-    return await this.db.doc<User>(userURL).ref.get().then((snapshot) => {
-      const data = snapshot.data();
-      this.userService.addStoredUsers(userURL, data);
-      return new User(data.uid, data.displayName, data.email, data.chapters, data.primaryRole, data.secondaryRole);
-    });
-  }
-
-  public startEdit(i: number, reflection: Reflection) {
-    const dialogRef = this.dialog.open(EditDialog, {
+  public startEdit(i: number, user: User) {
+    const dialogRef = this.dialog.open(ProfileDialog, {
       data: {
         chapters: this.user.chapters,
-        ...reflection,
-        userId: this.db.doc(`/users/${this.user.id}`).ref
+        ...user,
+        userId: this.db.doc(`/users/${user.id}`).ref
       },
-      panelClass: ['full-width-dialog', 'edit-dialog']
+      panelClass: ['full-width-dialog', 'profile-dialog']
     });
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         result.modified = new Date();
-        this.db.collection('reflections').doc(result.id).set(result).then((newResult) => {
-          this.isLoading = true;
-          result.userURL = `users/${this.user.id}`;
+        // this.db.collection('users').doc(result.id).set(result).then((newResult) => {
+        //   this.isLoading = true;
+        //   result.userURL = `users/${user.id}`;
 
-          this.tempUserArray.splice(i, 1, result);
-          this.refreshTable(this.tempUserArray);
-          this.snackbar.open('Updated reflection!', 'OK', { duration: 5000 });
-        }).catch((error) => {
-          this.snackbar.open('Something went wrong...', 'OK', { duration: 5000 });
-        });
+        //   this.tempUserArray.splice(i, 1, result);
+        //   this.refreshTable(this.tempUserArray);
+        //   this.snackbar.open(`Updated ${user.displayName}`, 'OK', { duration: 5000 });
+        // }).catch((error) => {
+        //   this.snackbar.open('Something went wrong...', 'OK', { duration: 5000 });
+        // });
       }
     });
+  }
+
+  public reformatChapters(chapters: Array<string>, type: string): string{
+    chapters = chapters.sort();
+    if (type === 'display') {
+      if (chapters && chapters.length > 3) {
+        return `${chapters[0]}, ${chapters[1]}, ${chapters[2]}, +${chapters.length-3}`;
+      } else if (chapters && chapters.length > 0 && chapters.length < 4) {
+        return chapters.join(', ');
+      }
+      
+      return 'N/A';
+    } else {
+      if (chapters && chapters.length > 3) {
+        const extra: Array<string> = chapters.slice(3);
+        return extra.join(', ');
+      }
+    }
+
+  }
+
+  private whatRank(privilege: string): number {
+    if (privilege == 'Admin') {
+      return 5;
+    } else if (privilege == 'Boss') {
+      return 4;
+    } else if (privilege == 'Regional Leader') {
+      return 3;
+    } else if (privilege == 'President') {
+     return 2;
+    }
+    return 0;
+  }
+
+  public actionPriviledge(row: User): boolean {
+    if (this.user.primaryRole == 'Member' || !this.user.primaryRole) {
+      return false;
+    }
+
+    const rowUserRank = this.whatRank(row.primaryRole);
+    const userRank = this.whatRank(this.user.primaryRole);
+
+    return userRank > rowUserRank;
   }
 
   private refreshTable(data) {

@@ -1,8 +1,8 @@
 <!-- Toolbar -->
 <div class="toolbar" role="banner">
-    <div class="spacer" (click)="goToPage('home')">
-        <img alt="Angular Logo" src="../../assets/images/logo/logo.png" width="60" />
-        <span>{{ title }}</span>
+    <div class="spacer">
+        <img alt="Angular Logo" src="../../assets/images/logo/logo.png" width="60" (click)="goToPage('home')"/>
+        <span (click)="goToPage('home')">{{ title }}</span>
     </div>
 
     <!-- <ngx-auth-firebaseui-avatar (onSignOut)="signOut($event)"></ngx-auth-firebaseui-avatar> -->
@@ -72,7 +72,7 @@
                 </th>
                 <td mat-cell *matCellDef="let row; let i=index;">
                     <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu"
-                        *ngIf="row.userURL == 'users/'+user.id || user.primaryRole == 'Admin' || user.primaryRole == 'Boss'"
+                        *ngIf="actionPriviledge(row)"
                         (click)="$event.stopPropagation();">
                         <mat-icon>more_vert</mat-icon>
 
