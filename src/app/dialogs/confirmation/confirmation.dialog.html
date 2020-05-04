@@ -1,0 +1,6 @@
+<h2>{{data.title}}</h2>
+<p>{{data.contentText}}</p>
+<div>
+    <button  mat-button (click)="submit()" color='{{data.firstBtnColor}}'>{{data.firstBtnTxt}}</button>
+    <button  mat-button  (click)="onNoClick()" tabindex="-1" color='{{data.secondBtnColor}}'>{{data.secondBtnTxt}}</button>
+</div>

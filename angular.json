@@ -62,6 +62,7 @@
                   "with": "src/environments/environment.prod.ts"
                 }
               ],
+              "aot": true,
               "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
@@ -191,6 +192,11 @@
           "configurations": {
             "production": {}
           }
+        }
+      },
+      "i18n": {
+        "locales": {
+          "ja": "src/locale/messages.ja.xlf"
         }
       }
     },

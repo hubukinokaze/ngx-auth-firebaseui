@@ -41,6 +41,12 @@ export class HomeComponent implements OnInit, OnDestroy {
   public isLoading: boolean = true;
   private loadLimit: number = 50;
 
+  languageList = [
+    { code: 'en', label: 'English' },
+    { code: 'fr', label: 'French' },
+    { code: 'ja', label: 'Japanese' }
+  ];
+
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
 
@@ -259,7 +265,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         result.modified = new Date();
-        this.db.collection('reflections').doc(result.id).set(result).then((newResult) => {
+        this.db.collection('reflections').doc(result.id).update(result).then((newResult) => {
           this.isLoading = true;
           result.userURL = `users/${this.user.id}`;
           

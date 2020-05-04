@@ -11,6 +11,7 @@ import { ProfileDialog } from 'src/app/dialogs/profile/profile.dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Subscription } from 'rxjs';
 import { UserService } from 'src/app/services/user.service';
+import { ConfirmationDialog } from 'src/app/dialogs/confirmation/confirmation.dialog';
 
 @Component({
   selector: 'app-manage-users',
@@ -70,14 +71,16 @@ export class ManageUsersComponent implements OnInit, OnDestroy {
   }
 
   private getUsers() {
-    if (this.whatRank(this.user.primaryRole) == 0 ) {
+    if (this.whatRank(this.user.primaryRole) == 0) {
       this.goToPage('home');
     }
     let chapterList = [""];
     if (this.user?.chapters && this.user.chapters.length > 0) {
       chapterList = this.user.chapters;
     }
-    this.db.collection("users").ref.orderBy("displayName", "desc").where("chapters", 'array-contains-any',chapterList).limit(100).get().then((snapshot) => {
+    let link = this.whatRank(this.user.primaryRole) > 3 ? this.db.collection("users").ref.orderBy("displayName", "desc") :
+      this.db.collection("users").ref.orderBy("displayName", "desc").where("chapters", 'array-contains-any', chapterList);
+    link.get().then((snapshot) => {
       let items = [];
       snapshot.docs.map(a => {
         const data = a.data();
@@ -122,37 +125,80 @@ export class ManageUsersComponent implements OnInit, OnDestroy {
       data: {
         chapters: this.user.chapters,
         ...user,
-        userId: this.db.doc(`/users/${user.id}`).ref
+        otherUser: this.user,
+        userId: this.db.doc(`/users/${user.id}`).ref,
+        isOtherUser: true
       },
       panelClass: ['full-width-dialog', 'profile-dialog']
     });
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        result.modified = new Date();
-        // this.db.collection('users').doc(result.id).set(result).then((newResult) => {
-        //   this.isLoading = true;
-        //   result.userURL = `users/${user.id}`;
+        let tempUser = {
+          chapters: result.chapters,
+          primaryRole: result.primaryRole,
+          modified: new Date(),
+          secondaryRole: result.secondaryRole
+        };
 
-        //   this.tempUserArray.splice(i, 1, result);
-        //   this.refreshTable(this.tempUserArray);
-        //   this.snackbar.open(`Updated ${user.displayName}`, 'OK', { duration: 5000 });
-        // }).catch((error) => {
-        //   this.snackbar.open('Something went wrong...', 'OK', { duration: 5000 });
-        // });
+        user.chapters = result.chapters;
+        user.primaryRole = result.primaryRole;
+        user.modified = new Date();
+
+        if (result.secondaryRole) {
+          user.secondaryRole = result.secondaryRole;
+        } else {
+          delete tempUser.secondaryRole;
+        }
+
+        this.db.collection('users').doc(result.id).update(tempUser).then((newResult) => {
+          this.snackbar.open(`Updated ${user.displayName}`, 'OK', { duration: 5000 });
+        }).catch((error) => {
+          this.snackbar.open('Something went wrong...', 'OK', { duration: 5000 });
+        });
       }
     });
   }
 
-  public reformatChapters(chapters: Array<string>, type: string): string{
+  public deleteUser(i: number, user: User) {
+    const dialogRef = this.dialog.open(ConfirmationDialog, {
+      data: {
+        ...user,
+        title: 'Delete',
+        contentText: `Are you sure you want to delete ${user.displayName}?`,
+        firstBtnTxt: 'Delete',
+        firstBtnColor: 'warn',
+        secondBtnTxt: 'Cancel',
+        secondBtnColor: null
+      },
+      panelClass: ['confirmation-dialog']
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.tempUserArray.splice(i, 1);
+        this.refreshTable(this.tempUserArray);
+    
+        this.db.collection('users').doc(user.id).delete().then(() => {
+          this.snackbar.open(`Deleted ${user.displayName}`, 'OK', { duration: 5000 });
+        }).catch((error) => {
+          this.snackbar.open('Something went wrong...', 'OK', { duration: 5000 });
+        });
+      }
+    });
+
+
+  }
+
+  public reformatChapters(chapters: Array<string>, type: string): string {
     chapters = chapters.sort();
     if (type === 'display') {
       if (chapters && chapters.length > 3) {
-        return `${chapters[0]}, ${chapters[1]}, ${chapters[2]}, +${chapters.length-3}`;
+        return `${chapters[0]}, ${chapters[1]}, ${chapters[2]}, +${chapters.length - 3}`;
       } else if (chapters && chapters.length > 0 && chapters.length < 4) {
         return chapters.join(', ');
       }
-      
+
       return 'N/A';
     } else {
       if (chapters && chapters.length > 3) {
@@ -171,7 +217,7 @@ export class ManageUsersComponent implements OnInit, OnDestroy {
     } else if (privilege == 'Regional Leader') {
       return 3;
     } else if (privilege == 'President') {
-     return 2;
+      return 2;
     }
     return 0;
   }

@@ -15,6 +15,9 @@ export class AddDialog {
 
   constructor(public dialogRef: MatDialogRef<AddDialog>,
     @Inject(MAT_DIALOG_DATA) public data: any) {
+      if (data?.chapters && data?.chapters.length == 1) {
+        data.carpChapter = data.chapters[0];
+      }
     }
 
   getErrorMessage() {

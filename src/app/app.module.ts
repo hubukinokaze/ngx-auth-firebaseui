@@ -1,5 +1,5 @@
 import {BrowserModule} from '@angular/platform-browser';
-import {NgModule} from '@angular/core';
+import {NgModule, LOCALE_ID} from '@angular/core';
 
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
@@ -24,6 +24,7 @@ import {AddDialog} from './dialogs/add/add.dialog';
 import {DeleteDialog} from './dialogs/delete/delete.dialog';
 import {EditDialog} from './dialogs/edit/edit.dialog';
 import {ProfileDialog} from './dialogs/profile/profile.dialog';
+import {ConfirmationDialog} from './dialogs/confirmation/confirmation.dialog';
 import {MatButtonModule} from '@angular/material/button';
 import {MatTabsModule} from '@angular/material/tabs';
 import {MatIconModule} from '@angular/material/icon';
@@ -71,6 +72,7 @@ export function createTranslateLoader(http: HttpClient) {
     DeleteDialog,
     EditDialog,
     ProfileDialog,
+    ConfirmationDialog,
     AvatarComponent,
     ManageUsersComponent,
     PageNotFoundComponent

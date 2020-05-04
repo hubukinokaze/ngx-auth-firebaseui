@@ -6,6 +6,7 @@ import {Router} from '@angular/router';
 import {AngularFireAuth} from '@angular/fire/auth';
 import {MatTabChangeEvent} from '@angular/material/tabs';
 import {AngularFirestore} from '@angular/fire/firestore';
+import {TranslateService} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-root',
@@ -37,8 +38,12 @@ export class AppComponent implements OnDestroy {
   constructor(public auth: AngularFireAuth,
               private db: AngularFirestore,
               public router: Router,
-              public snackbar: MatSnackBar) {
-  }
+              public snackbar: MatSnackBar,
+              translate: TranslateService) {
+                translate.setDefaultLang('en');
+                // translate.use('ja');
+                // console.log(translate.getLangs())
+            }
 
   get color(): string {
     return this.error ? 'warn' : 'primary';

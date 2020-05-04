@@ -27,6 +27,7 @@ export class AvatarComponent implements OnInit {
   public tempUser: User;
   public displayNameInitials: string;
   public isAdmin: boolean = false;
+  public isManageUser: boolean = false;
 
   constructor(private db: AngularFirestore,
     public auth: AngularFireAuth,
@@ -51,6 +52,8 @@ export class AvatarComponent implements OnInit {
         this.loginUser = userData;
       });
     }
+
+    this.isManageUser = this.router.url == '/users';
   }
 
   private setup(userData) {
@@ -125,7 +128,7 @@ export class AvatarComponent implements OnInit {
 
   }
 
-  public goToManageUsers() {
-    this.router.navigate(['/users']);
+  public goToPage(link) {
+    this.router.navigate([link]);
   }
 }

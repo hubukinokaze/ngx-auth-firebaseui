@@ -12,7 +12,7 @@
         <div class="form">
             <mat-form-field color="primary">
                 <input matInput #inputstateName class="form-control" placeholder="Name" [(ngModel)]="data.displayName"
-                    name="displayName" required maxlength="50">
+                    name="displayName" required maxlength="50" [disabled]="data?.isOtherUser">
                     <mat-error *ngIf="formControl.invalid">{{getErrorMessage()}}</mat-error>
                 <mat-hint align="end">{{inputstateName.value?.length || 0}}/50</mat-hint>
             </mat-form-field>
@@ -22,7 +22,7 @@
             <mat-form-field color="primary">
                 <mat-label>Primary Role</mat-label>
                 <mat-select class="form-control" [(ngModel)]="data.primaryRole" name="primaryRole"
-                [disabled]="data?.primaryRole == 'Admin' || data?.primaryRole == 'Boss'" required>
+                [disabled]="data?.primaryRole == 'Admin'" required (selectionChange)="onRoleChange($event.value)">
                     <mat-option>Clear</mat-option>
                     <mat-option *ngFor="let role of primaryRoles" [value]="role" [disabled]="checkRole(role)">
                         {{role}}
@@ -48,6 +48,7 @@
             <mat-form-field color="primary">
                 <mat-label>Carp Chapter</mat-label>
                 <mat-select class="form-control" [(ngModel)]="data.chapters" name="chapter" (selectionChange)="chaptersChanged($event.value)" multiple required>
+                    <!-- <mat-option [value]="'UCI'" [disabled]="">Select All</mat-option> -->
                     <mat-option *ngFor="let carpChapter of carpChapters" [value]="carpChapter" [disabled]="disableChapter(carpChapter)">
                         {{carpChapter}}
                     </mat-option>

@@ -1,0 +1,28 @@
+{
+  "home": {
+    "filter": "フィルタ",
+    "chapter": "章",
+    "name": "名前",
+    "source": "源",
+    "episode": "第話",
+    "content": "内容",
+    "noobMsg": "初めて？感想上げる前にプロフィールを作ってください。"
+  },
+  "avatar": {
+    "profile": "プロフィール",
+    "userManagement": "ユーザー管理",
+    "reflections": "感想",
+    "signOut": "ログアウト"
+  },
+  "profile": {
+    "title": "プロフィール",
+    "primaryRole": "役割"
+  },
+  "role": {
+    "admin": "管理者",
+    "boss": "大将",
+    "regionalLeader": "地域リーダー",
+    "president": "会長",
+    "member": "子分"
+  }
+}
