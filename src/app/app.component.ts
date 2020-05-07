@@ -39,8 +39,8 @@ export class AppComponent implements OnDestroy {
               private db: AngularFirestore,
               public router: Router,
               public snackbar: MatSnackBar,
-              translate: TranslateService) {
-                translate.setDefaultLang('en');
+              public translate: TranslateService) {
+                translate.setDefaultLang('eng');
                 // translate.use('ja');
                 // console.log(translate.getLangs())
             }

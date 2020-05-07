@@ -1,3 +1,16 @@
+<button id="translate-btn" mat-button
+        [matMenuTriggerFor]="langMenu" 
+        [matTooltip]="'translate'"
+        mat-mini-fab
+        color="basic">
+  <mat-icon aria-label="Language">g_translate</mat-icon>
+</button>
+
+<mat-menu #langMenu="matMenu">
+  <button mat-menu-item (click)="setLanguage('eng')">English</button>
+  <button mat-menu-item (click)="setLanguage('ja')">日本</button>
+</mat-menu>
+
 <button *ngIf="user"
         [matMenuTriggerFor]="posXMenu"
         [matTooltip]="user?.displayName"

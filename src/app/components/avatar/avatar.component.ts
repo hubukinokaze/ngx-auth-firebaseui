@@ -10,6 +10,7 @@ import { Subscription } from 'rxjs';
 import { UserService } from 'src/app/services/user.service';
 import { ProfileDialog } from 'src/app/dialogs/profile/profile.dialog';
 import * as cloneDeep from 'lodash/cloneDeep';
+import {TranslateService} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-avatar',
@@ -34,7 +35,8 @@ export class AvatarComponent implements OnInit {
     public router: Router,
     public dialog: MatDialog,
     public snackbar: MatSnackBar,
-    public userService: UserService) { }
+    public userService: UserService,
+    private translate: TranslateService) { }
 
   ngOnInit(): void {
     if (this.userService.getUser()) {
@@ -117,6 +119,10 @@ export class AvatarComponent implements OnInit {
     const initialsRegExp: RegExpMatchArray = displayName.match(/\b\w/g) || [];
     const initials = ((initialsRegExp.shift() || '') + (initialsRegExp.pop() || '')).toUpperCase();
     return initials;
+  }
+
+  public setLanguage(lang: string): void {
+    this.translate.use(lang);
   }
 
   public signOut(): void {
