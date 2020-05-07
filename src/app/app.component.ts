@@ -41,6 +41,9 @@ export class AppComponent implements OnDestroy {
               public snackbar: MatSnackBar,
               public translate: TranslateService) {
                 translate.setDefaultLang('eng');
+                if (localStorage.getItem('language')) {
+                  translate.use(localStorage.getItem('language'));
+                }
                 // translate.use('ja');
                 // console.log(translate.getLangs())
             }

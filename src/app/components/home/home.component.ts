@@ -14,6 +14,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Subscription } from 'rxjs';
 import { UserService } from 'src/app/services/user.service';
 import { animate, state, style, transition, trigger } from '@angular/animations';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-home',
@@ -35,17 +36,11 @@ export class HomeComponent implements OnInit, OnDestroy {
   public title = 'Heavenly Parent Reflections';
   public user: User;
 
-  public displayedColumns: string[] = ['chapter', 'name', 'source', 'episode', 'content', 'actions'];
+  public displayedColumns: string[] = ['chapter', 'displayName', 'source', 'episode', 'content', 'actions'];
   public dataSource: MatTableDataSource<Reflection>;
   public tempReflectionArray: Array<Reflection>;
   public isLoading: boolean = true;
   private loadLimit: number = 50;
-
-  languageList = [
-    { code: 'en', label: 'English' },
-    { code: 'fr', label: 'French' },
-    { code: 'ja', label: 'Japanese' }
-  ];
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
@@ -54,7 +49,8 @@ export class HomeComponent implements OnInit, OnDestroy {
     private router: Router,
     private dialog: MatDialog,
     private snackbar: MatSnackBar,
-    private userService: UserService) {
+    private userService: UserService,
+    private translate: TranslateService) {
   }
 
   ngOnInit(): void {
@@ -245,7 +241,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
           this.snackbar.open('Added reflection!', 'OK', { duration: 5000 });
         }).catch((error) => {
-          this.snackbar.open('Something went wrong...', 'OK', { duration: 5000 });
+          this.snackbar.open(this.translate.instant('console.error'), 'OK', { duration: 5000 });
         });
 
       }
@@ -273,7 +269,7 @@ export class HomeComponent implements OnInit, OnDestroy {
           this.refreshTable(this.tempReflectionArray);
           this.snackbar.open('Updated reflection!', 'OK', { duration: 5000 });
         }).catch((error) => {
-          this.snackbar.open('Something went wrong...', 'OK', { duration: 5000 });
+          this.snackbar.open(this.translate.instant('console.error'), 'OK', { duration: 5000 });
         });
       }
     });
@@ -295,7 +291,7 @@ export class HomeComponent implements OnInit, OnDestroy {
           this.snackbar.open('Deleted reflection!', 'OK', { duration: 5000 });
         }).catch((error) => {
           console.log(error);
-          this.snackbar.open('Something went wrong...', 'OK', { duration: 5000 });
+          this.snackbar.open(this.translate.instant('console.error'), 'OK', { duration: 5000 });
         });
       }
     });

@@ -1,4 +1,7 @@
 {
+  "console": {
+    "error": "問題が発生しました..."
+  },
   "home": {
     "filter": "フィルタ",
     "chapter": "章",
@@ -6,7 +9,9 @@
     "source": "源",
     "episode": "第話",
     "content": "内容",
-    "noobMsg": "初めて？感想上げる前にプロフィールを作ってください。"
+    "noobMsg": "初めて？感想上げる前にプロフィールを作ってください。",
+    "editBtn": "編集",
+    "deleteBtn": "削除"
   },
   "avatar": {
     "profile": "プロフィール",

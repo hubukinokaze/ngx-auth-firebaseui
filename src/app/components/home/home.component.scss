@@ -83,6 +83,8 @@
         td.mat-column-chapter,
         td.mat-column-episode {
           width: 5%;
+          min-width: 50px;
+          max-width: 100px;
         }
 
         td.mat-column-name {
@@ -91,6 +93,8 @@
 
         td.mat-column-source {
           width: 10%;
+          min-width: 60px;
+          max-width: 100px;
         }
 
         td.mat-column-actions {
@@ -353,7 +357,6 @@
             width: auto;
           }
 
-          
           .element-row{
             cursor: pointer;
           }

@@ -1,4 +1,7 @@
 {
+  "console": {
+    "error": "Something went wrong..."
+  },
   "home": {
     "filter": "Filter",
     "chapter": "Chapter",
@@ -6,7 +9,9 @@
     "source": "Source",
     "episode": "Episode",
     "content": "Content",
-    "noobMsg": "New here? Please, fill out your profile before uploading reflections."
+    "noobMsg": "New here? Please, fill out your profile before uploading reflections.",
+    "editBtn": "Edit",
+    "deleteBtn": "Delete"
   },
   "avatar": {
     "profile": "Profile",

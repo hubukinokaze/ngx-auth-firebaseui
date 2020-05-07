@@ -123,6 +123,7 @@ export class AvatarComponent implements OnInit {
 
   public setLanguage(lang: string): void {
     this.translate.use(lang);
+    localStorage.setItem('language', lang);
   }
 
   public signOut(): void {
