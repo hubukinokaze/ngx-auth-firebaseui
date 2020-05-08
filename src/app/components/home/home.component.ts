@@ -239,7 +239,7 @@ export class HomeComponent implements OnInit, OnDestroy {
           this.tempReflectionArray.push(result);
           this.refreshTable(this.tempReflectionArray);
 
-          this.snackbar.open('Added reflection!', 'OK', { duration: 5000 });
+          this.snackbar.open(this.translate.instant('console.success'), 'OK', { duration: 5000 });
         }).catch((error) => {
           this.snackbar.open(this.translate.instant('console.error'), 'OK', { duration: 5000 });
         });
@@ -267,7 +267,7 @@ export class HomeComponent implements OnInit, OnDestroy {
           
           this.tempReflectionArray.splice(i, 1, result);
           this.refreshTable(this.tempReflectionArray);
-          this.snackbar.open('Updated reflection!', 'OK', { duration: 5000 });
+          this.snackbar.open(this.translate.instant('console.success'), 'OK', { duration: 5000 });
         }).catch((error) => {
           this.snackbar.open(this.translate.instant('console.error'), 'OK', { duration: 5000 });
         });
@@ -288,7 +288,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
           this.refreshTable(this.tempReflectionArray);
 
-          this.snackbar.open('Deleted reflection!', 'OK', { duration: 5000 });
+          this.snackbar.open(this.translate.instant('console.success'), 'OK', { duration: 5000 });
         }).catch((error) => {
           console.log(error);
           this.snackbar.open(this.translate.instant('console.error'), 'OK', { duration: 5000 });

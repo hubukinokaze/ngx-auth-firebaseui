@@ -1,13 +1,13 @@
 <div class="container">
-    <h3 mat-dialog-title>Edit reflection</h3>
+    <h3 mat-dialog-title translate>editReflection.title</h3>
 
     <form class="mat-dialog-content" (ngSubmit)="submit" #formControl="ngForm">
 
         <div class="form">
             <mat-form-field>
-                <mat-label>Carp Chapter</mat-label>
+                <mat-label translate>reflection.carpChapter</mat-label>
                 <mat-select class="form-control" [(ngModel)]="data.carpChapter" name="chapter" disabled>
-                    <mat-option>Clear</mat-option>
+                    <mat-option>{{ 'editReflection.clear' | translate }}</mat-option>
                     <mat-option *ngFor="let carpChapter of data.chapters" [value]="carpChapter">
                         {{carpChapter}}
                     </mat-option>
@@ -17,7 +17,7 @@
 
         <div class="form">
             <mat-form-field>
-                <input matInput #input class="form-control" placeholder="Name" [(ngModel)]="data.displayName"
+                <input matInput #input class="form-control" placeholder="{{ 'reflection.name' | translate }}" [(ngModel)]="data.displayName"
                     name="displayName" disabled>
             </mat-form-field>
         </div>
@@ -25,7 +25,7 @@
         <!--Contains mat-hint for characters count and has maxLengt set-->
         <div class="form">
             <mat-form-field color="primary">
-                <input matInput #inputstateSource class="form-control" placeholder="Source" [(ngModel)]="data.source"
+                <input matInput #inputstateSource class="form-control" placeholder="{{ 'reflection.source' | translate }}" [(ngModel)]="data.source"
                     name="source" maxlength="50" required>
                 <mat-error *ngIf="formControl.invalid">{{getErrorMessage()}}</mat-error>
                 <mat-hint align="end">{{inputstateSource.value?.length || 0}}/50</mat-hint>
@@ -34,26 +34,30 @@
 
         <div class="form">
             <mat-form-field color="primary">
-                <input matInput type="number" class="form-control" placeholder="Episode" [(ngModel)]="data.episode"
-                    name="episode" required>
+                <input matInput type="number" class="form-control" placeholder="{{ 'reflection.episode' | translate }}"
+                    [(ngModel)]="data.episode" name="episode" required>
                 <mat-error *ngIf="formControl.invalid">{{getErrorMessage()}}</mat-error>
-                <mat-hint align="end">Must be a number</mat-hint>
+                <mat-hint align="end" translate>console.numberErr</mat-hint>
             </mat-form-field>
         </div>
 
         <!--Contains mat-hint for characters count and has maxLengt set-->
         <div class="form content-form">
             <mat-form-field color="primary">
-                <textarea matInput #inputstateContent placeholder="Content" [(ngModel)]="data.content" name="content"
-                    maxlength="1000" required></textarea>
+                <textarea matInput #inputstateContent placeholder="{{ 'reflection.content' | translate }}"
+                    [(ngModel)]="data.content" name="content" maxlength="1000" required></textarea>
                 <mat-error *ngIf="formControl.invalid">{{getErrorMessage()}}</mat-error>
                 <mat-hint align="end">{{inputstateContent.value?.length || 0}}/1000</mat-hint>
             </mat-form-field>
         </div>
 
         <div mat-dialog-actions>
-            <button mat-button [type]="submit" [disabled]="!formControl.valid" (click)="confirmAdd()">Save</button>
-            <button mat-button (click)="onNoClick()" tabindex="-1" color="warn">Cancel</button>
+            <button mat-button [type]="submit" [disabled]="!formControl.valid" (click)="confirmAdd()">
+                <span translate>menu.save</span>
+            </button>
+            <button mat-button (click)="onNoClick()" tabindex="-1" color="warn">
+                <span translate>menu.cancel</span>
+            </button>
         </div>
     </form>
 </div>

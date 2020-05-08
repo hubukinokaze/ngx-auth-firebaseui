@@ -1,20 +1,24 @@
 <div class="container">
-    <h3 mat-dialog-title>Are you sure?</h3>
+    <h3 mat-dialog-title translate>deleteReflection.title</h3>
     <div mat-dialog-content class="delete-info">
-      <p>CARP Chapter: {{data.carpChapter}}</p>
+      <p>{{ 'reflection.carpChapter' | translate }}: {{data.carpChapter}}</p>
       
-      <p>Name: {{data.displayName}}</p>
+      <p>{{ 'reflection.name' | translate }}: {{data.displayName}}</p>
       
-      <p>Source: {{data.source}}</p>
+      <p>{{ 'reflection.source' | translate }}: {{data.source}}</p>
       
-      <p>Episode: {{data.episode}}</p>
+      <p>{{ 'reflection.episode' | translate }}: {{data.episode}}</p>
       
-      <p class="content-form">Content: {{data.content}}</p>
+      <p class="content-form">{{ 'reflection.content' | translate }}: {{data.content}}</p>
     </div>
   
     <div mat-dialog-actions>
-      <button mat-button color='warn' (click)="confirmDelete()">Delete</button>
-      <button mat-button (click)="onNoClick()" tabindex="-1">Cancel</button>
+      <button mat-button color='warn' (click)="confirmDelete()">
+        <span translate>menu.delete</span>
+      </button>
+      <button mat-button (click)="onNoClick()" tabindex="-1">
+        <span translate>menu.cancel</span>
+      </button>
     </div>
   </div>
   

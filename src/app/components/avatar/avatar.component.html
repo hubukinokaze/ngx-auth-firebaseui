@@ -1,8 +1,5 @@
-<button id="translate-btn" mat-button
-        [matMenuTriggerFor]="langMenu" 
-        [matTooltip]="'translate'"
-        mat-mini-fab
-        color="basic">
+<button id="translate-btn" mat-button [matMenuTriggerFor]="langMenu" [matTooltip]="'translate'" mat-mini-fab
+  color="basic">
   <mat-icon aria-label="Language">g_translate</mat-icon>
 </button>
 
@@ -11,13 +8,9 @@
   <button mat-menu-item (click)="setLanguage('ja')">日本</button>
 </mat-menu>
 
-<button *ngIf="user"
-        [matMenuTriggerFor]="posXMenu"
-        [matTooltip]="user?.displayName"
-        [style.background-image]="'url(' + loginUser?.photoURL + ')'"
-        aria-label="Open x-positioned menu"
-        mat-mini-fab
-        style="background-size: cover">
+<button *ngIf="user" [matMenuTriggerFor]="posXMenu" [matTooltip]="user?.displayName"
+  [style.background-image]="'url(' + loginUser?.photoURL + ')'" aria-label="Open x-positioned menu" mat-mini-fab
+  style="background-size: cover">
   <span *ngIf="!loginUser?.photoURL">{{displayNameInitials || ''}}</span>
 </button>
 
@@ -32,20 +25,20 @@
 
   <div class="menu-container" fxFlex="100" fxLayout="column">
     <button (click)="openProfile()" color="primary" mat-button>
-        <mat-icon aria-label="Profile">whatshot</mat-icon>
-        <span>{{ "avatar.profile" | translate }}</span>
+      <mat-icon aria-label="Profile">whatshot</mat-icon>
+      <span>{{ "avatar.profile" | translate }}</span>
     </button>
     <button (click)="goToPage('/home')" color="primary" mat-button *ngIf="isManageUser">
       <mat-icon aria-label="Profile">notes</mat-icon>
       <span>{{ "avatar.reflections" | translate }}</span>
-  </button>
+    </button>
     <button (click)="goToPage('/users')" color="primary" mat-button *ngIf="isAdmin && !isManageUser">
       <mat-icon aria-label="Profile">vpn_key</mat-icon>
       <span>{{ "avatar.userManagement" | translate }}</span>
-  </button>
+    </button>
     <button (click)="signOut()" color="warn" mat-button>
-        <mat-icon aria-label="Sign Out">hotel</mat-icon>
-        <span>{{ "avatar.signOut" | translate }}</span>
+      <mat-icon aria-label="Sign Out">hotel</mat-icon>
+      <span>{{ "avatar.signOut" | translate }}</span>
     </button>
   </div>
 </mat-menu>

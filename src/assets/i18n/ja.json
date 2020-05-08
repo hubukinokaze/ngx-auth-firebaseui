@@ -1,6 +1,10 @@
 {
   "console": {
-    "error": "問題が発生しました..."
+    "error": "問題が発生しました...",
+    "required": "必須",
+    "invalidEmail": "有効な電子メールアドレスではありません",
+    "numberErr": "数字のみ",
+    "success": "成功しました！"
   },
   "home": {
     "filter": "フィルタ",
@@ -13,6 +17,15 @@
     "editBtn": "編集",
     "deleteBtn": "削除"
   },
+  "users": {
+    "filter": "フィルタ",
+    "name": "名前",
+    "primaryRole": "一役割",
+    "secondaryRole": "二役割",
+    "chapters": "チャプター",
+    "editBtn": "編集",
+    "deleteBtn": "削除"
+  },
   "avatar": {
     "profile": "プロフィール",
     "userManagement": "ユーザー管理",
@@ -20,8 +33,23 @@
     "signOut": "ログアウト"
   },
   "profile": {
-    "title": "プロフィール",
-    "primaryRole": "役割"
+    "title": "マイプロフィール",
+    "altTitle": "プロフィールを更新",
+    "name": "名前",
+    "primaryRole": "一役割",
+    "secondaryRole": "二役割",
+    "clear": "消す"
+  },
+  "addReflection": {
+    "title": "感想を投稿",
+    "clear": "消す"
+  },
+  "editReflection": {
+    "title": "感想を更新",
+    "clear": "消す"
+  },
+  "deleteReflection": {
+    "title": "よろしいですか？"
   },
   "role": {
     "admin": "管理者",
@@ -29,5 +57,18 @@
     "regionalLeader": "地域リーダー",
     "president": "会長",
     "member": "子分"
+  },
+  "reflection": {
+    "name": "名前",
+    "source": "源",
+    "episode": "第話",
+    "content": "内容",
+    "chapter": "チャプター",
+    "carpChapter": "カープ チャプター"
+  },
+  "menu": {
+    "cancel": "キャンセル",
+    "save": "セーブ",
+    "delete": "削除"
   }
 }

@@ -4,14 +4,15 @@
             mat-mini-fab style="background-size: cover">
             <span *ngIf="!data?.photoURL">{{displayNameInitials || ''}}</span>
         </button>
-        <span class="profile-title">{{data.displayName}}'s Profile</span>
+        <span *ngIf="data?.isOtherUser" class="profile-title" translate>profile.altTitle</span>
+        <span *ngIf="!data?.isOtherUser" class="profile-title" translate>profile.title</span>
     </div>
 
     <form class="mat-dialog-content" (ngSubmit)="submit" #formControl="ngForm">
 
         <div class="form">
             <mat-form-field color="primary">
-                <input matInput #inputstateName class="form-control" placeholder="Name" [(ngModel)]="data.displayName"
+                <input matInput #inputstateName class="form-control" placeholder="{{ 'profile.name' | translate }}" [(ngModel)]="data.displayName"
                     name="displayName" required maxlength="50" [disabled]="data?.isOtherUser">
                     <mat-error *ngIf="formControl.invalid">{{getErrorMessage()}}</mat-error>
                 <mat-hint align="end">{{inputstateName.value?.length || 0}}/50</mat-hint>
@@ -20,10 +21,10 @@
 
         <div class="form">
             <mat-form-field color="primary">
-                <mat-label>Primary Role</mat-label>
+                <mat-label translate>profile.primaryRole</mat-label>
                 <mat-select class="form-control" [(ngModel)]="data.primaryRole" name="primaryRole"
                 [disabled]="data?.primaryRole == 'Admin'" required (selectionChange)="onRoleChange($event.value)">
-                    <mat-option>Clear</mat-option>
+                    <mat-option>{{ 'profile.clear' | translate }}</mat-option>
                     <mat-option *ngFor="let role of primaryRoles" [value]="role" [disabled]="checkRole(role)">
                         {{role}}
                     </mat-option>
@@ -34,9 +35,9 @@
 
         <div class="form">
             <mat-form-field color="primary">
-                <mat-label>Secondary Role</mat-label>
+                <mat-label translate>profile.secondaryRole</mat-label>
                 <mat-select class="form-control" [(ngModel)]="data.secondaryRole" name="secondaryRole" disabled>
-                    <mat-option>Clear</mat-option>
+                    <mat-option>{{ 'profile.clear' | translate }}</mat-option>
                     <mat-option *ngFor="let role of secondaryRoles" [value]="role">
                         {{role}}
                     </mat-option>
@@ -46,7 +47,7 @@
 
         <div class="form">
             <mat-form-field color="primary">
-                <mat-label>Carp Chapter</mat-label>
+                <mat-label translate>reflection.carpChapter</mat-label>
                 <mat-select class="form-control" [(ngModel)]="data.chapters" name="chapter" (selectionChange)="chaptersChanged($event.value)" multiple required>
                     <!-- <mat-option [value]="'UCI'" [disabled]="">Select All</mat-option> -->
                     <mat-option *ngFor="let carpChapter of carpChapters" [value]="carpChapter" [disabled]="disableChapter(carpChapter)">
@@ -59,8 +60,12 @@
         </div>
 
         <div mat-dialog-actions>
-            <button mat-button [type]="submit" [disabled]="!formControl.valid" (click)="confirmAdd()">Save</button>
-            <button mat-button (click)="onNoClick()" tabindex="-1" color="warn">Cancel</button>
+            <button mat-button [type]="submit" [disabled]="!formControl.valid" (click)="confirmAdd()">
+                <span translate>menu.save</span>
+            </button>
+            <button mat-button (click)="onNoClick()" tabindex="-1" color="warn">
+                <span translate>menu.cancel</span>
+            </button>
         </div>
     </form>
 </div>

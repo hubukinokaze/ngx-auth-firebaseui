@@ -25,6 +25,7 @@ body {
 // }
 
 .mat-dialog-content {
+    max-height: 100% !important;
     height: calc(100% - 44px);
     display: flex !important;
     flex-flow: column;
@@ -39,6 +40,7 @@ body {
 .mat-dialog-actions {
     padding: 0px !important;
     margin: 0px !important;
+    justify-content: flex-end;
 }
 
 .full-width-dialog.add-dialog,

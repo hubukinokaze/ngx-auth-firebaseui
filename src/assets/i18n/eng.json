@@ -1,6 +1,10 @@
 {
   "console": {
-    "error": "Something went wrong..."
+    "error": "Something went wrong...",
+    "required": "Required field",
+    "invalidEmail": "Not a valid email",
+    "numberErr": "Must be a number",
+    "success": "Success!"
   },
   "home": {
     "filter": "Filter",
@@ -13,6 +17,15 @@
     "editBtn": "Edit",
     "deleteBtn": "Delete"
   },
+  "users": {
+    "filter": "Filter",
+    "name": "Name",
+    "primaryRole": "1st Role",
+    "secondaryRole": "2nd Role",
+    "chapters": "Chapter(s)",
+    "editBtn": "Edit",
+    "deleteBtn": "Delete"
+  },
   "avatar": {
     "profile": "Profile",
     "userManagement": "Manage Users",
@@ -20,8 +33,23 @@
     "signOut": "Sign out"
   },
   "profile": {
-    "title": "Profile",
-    "primaryRole": "Primary role"
+    "title": "My Profile",
+    "altTitle": "Edit Profile",
+    "name": "Name",
+    "primaryRole": "Primary role",
+    "secondaryRole": "Secondary role",
+    "clear": "Clear"
+  },
+  "addReflection": {
+    "title": "Add new reflection",
+    "clear": "Clear"
+  },
+  "editReflection": {
+    "title": "Edit reflection",
+    "clear": "Clear"
+  },
+  "deleteReflection": {
+    "title": "Are you sure?"
   },
   "role": {
     "admin": "Admin",
@@ -29,5 +57,18 @@
     "regionalLeader": "Regional Leader",
     "president": "President",
     "member": "Member"
+  },
+  "reflection": {
+    "name": "Name",
+    "source": "Source",
+    "episode": "Episode",
+    "content": "Content",
+    "chapter": "Chapter",
+    "carpChapter": "Carp Chapter"
+  },
+  "menu" : {
+    "cancel": "Cancel",
+    "save": "Save",
+    "delete": "Delete"
   }
 }

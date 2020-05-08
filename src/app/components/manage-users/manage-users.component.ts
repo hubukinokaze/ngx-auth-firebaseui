@@ -26,7 +26,7 @@ export class ManageUsersComponent implements OnInit, OnDestroy {
   public title = 'Heavenly Parent Reflections';
   public user: User;
 
-  public displayedColumns: string[] = ['name', 'primaryRole', 'secondaryRole', 'chapters', 'actions'];
+  public displayedColumns: string[] = ['displayName', 'primaryRole', 'secondaryRole', 'chapters', 'actions'];
   public dataSource: MatTableDataSource<User>;
   public tempUserArray: Array<User>;
   public isLoading: boolean = true;

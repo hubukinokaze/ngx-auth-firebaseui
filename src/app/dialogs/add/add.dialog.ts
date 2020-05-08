@@ -1,6 +1,7 @@
 import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { FormControl, Validators } from '@angular/forms';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-add',
@@ -14,6 +15,7 @@ export class AddDialog {
   ]);
 
   constructor(public dialogRef: MatDialogRef<AddDialog>,
+    public translate: TranslateService,
     @Inject(MAT_DIALOG_DATA) public data: any) {
       if (data?.chapters && data?.chapters.length == 1) {
         data.carpChapter = data.chapters[0];
@@ -21,8 +23,8 @@ export class AddDialog {
     }
 
   getErrorMessage() {
-    return this.formControl.hasError('required') ? 'Required field' :
-      this.formControl.hasError('email') ? 'Not a valid email' :
+    return this.formControl.hasError('required') ? this.translate.instant('console.required') :
+      this.formControl.hasError('email') ? this.translate.instant('console.invalidEmail') :
         '';
   }
 
