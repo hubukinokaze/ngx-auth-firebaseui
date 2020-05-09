@@ -7,6 +7,7 @@ import {AngularFireAuth} from '@angular/fire/auth';
 import {MatTabChangeEvent} from '@angular/material/tabs';
 import {AngularFirestore} from '@angular/fire/firestore';
 import * as firebase from 'firebase';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-landing',
@@ -38,7 +39,8 @@ export class LandingComponent implements OnDestroy {
   constructor(public auth: AngularFireAuth,
               private db: AngularFirestore,
               public router: Router,
-              public snackbar: MatSnackBar) {
+              public snackbar: MatSnackBar,
+              public translate: TranslateService) {
   }
 
   get color(): string {
@@ -77,6 +79,11 @@ export class LandingComponent implements OnDestroy {
     if (this.snackbarSubscription) {
       this.snackbarSubscription.unsubscribe();
     }
+  }
+
+  public setLanguage(lang: string): void {
+    this.translate.use(lang);
+    localStorage.setItem('language', lang);
   }
 
   onTabChange(event: MatTabChangeEvent) {

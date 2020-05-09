@@ -3,6 +3,18 @@
   <div class="spacer" (click)="goToPage('home')">
     <img alt="Angular Logo" src="../../assets/images/logo/logo.png" width="60" />
     <span>{{ title }}</span>
+
+    <span class="spacer"></span>
+
+    <button id="translate-btn" mat-button [matMenuTriggerFor]="langMenu" [matTooltip]="'translate'" mat-mini-fab
+      color="basic">
+      <mat-icon aria-label="Language">g_translate</mat-icon>
+    </button>
+
+    <mat-menu #langMenu="matMenu">
+      <button mat-menu-item (click)="setLanguage('eng')">English</button>
+      <button mat-menu-item (click)="setLanguage('ja')">日本</button>
+    </mat-menu>
   </div>
 </div>
 
@@ -12,10 +24,9 @@
   <div class="card highlight-card card-small">
 
 
-    <span>{{ title }} is in progress!</span>
+    <div translate>landing.welcomeMsg</div>
 
-    <svg alt="Moon" height="500" id="moon" viewBox="-30 0 100 100" width="500"
-      xmlns="http://www.w3.org/2000/svg">
+    <svg alt="Moon" height="500" id="moon" viewBox="-30 0 100 100" width="500" xmlns="http://www.w3.org/2000/svg">
       <path d="M50 20A40 40 0 1 0 50 70 30 30 0 1 1 50 20z" data-name="Path 40" fill="#FEFFC5" id="Path_40" />
     </svg>
 
@@ -29,8 +40,28 @@
 
 
     <mat-card-content>
-      <ngx-auth-firebaseui [providers]="[providers.Google]" [guestEnabled]="false" [goBackURL]="'../home'"
-        (onSuccess)="printUser($event)" (onError)="printError($event)" (selectedTabChange)="onTabChange($event)">
+      <ngx-auth-firebaseui
+        [providers]="[providers.Google]"
+        [guestEnabled]="false"
+        [resetPasswordEnabled]="false"
+        [goBackURL]="'../home'"
+        [signInTabText]="'landing.signInTabText' | translate"
+        [signInCardTitleText]="'landing.signInCardTitleText' | translate"
+        [loginButtonText]="'landing.loginButtonText' | translate"
+        [forgotPasswordButtonText]="'landing.forgotPasswordButtonText' | translate"
+        [nameText]="'landing.nameText' | translate"
+        [nameErrorRequiredText]="'landing.nameErrorRequiredText' | translate"
+        [nameErrorMinLengthText]="'landing.nameErrorMinLengthText' | translate"
+        [nameErrorMaxLengthText]="'landing.nameErrorMaxLengthText' | translate"
+        [emailText]="'landing.emailText' | translate"
+        [emailErrorRequiredText]="'landing.emailErrorRequiredText' | translate"
+        [emailErrorPatternText]="'landing.emailErrorPatternText' | translate"
+        [passwordText]="'landing.passwordText' | translate"
+        [passwordErrorRequiredText]="'landing.passwordErrorRequiredText' | translate"
+        [registerTabText]="'landing.registerTabText' | translate"
+        [registerCardTitleText]="'landing.registerCardTitleText' | translate"
+        [registerButtonText]="'landing.registerButtonText' | translate" (onSuccess)="printUser($event)"
+        (onError)="printError($event)" (selectedTabChange)="onTabChange($event)">
       </ngx-auth-firebaseui>
     </mat-card-content>
   </mat-card>

@@ -9,7 +9,7 @@ import { TranslateService } from '@ngx-translate/core';
   styleUrls: ['./profile.dialog.scss']
 })
 export class ProfileDialog {
-  public primaryRoles: Array<string>;
+  public primaryRoles: Array<any>;
   public secondaryRoles: Array<string>;
   public carpChapters: Array<string>;
   public displayNameInitials: string;
@@ -26,11 +26,26 @@ export class ProfileDialog {
     @Inject(MAT_DIALOG_DATA) public data: any) {
 
     this.primaryRoles = [
-      'Member',
-      'President',
-      'Regional Leader',
-      'Boss',
-      'Admin'
+      {
+        label: this.translate.instant('role.member'),
+        value: 'Member'
+      },
+      {
+        label: this.translate.instant('role.president'),
+        value: 'President'
+      },
+      {
+        label: this.translate.instant('role.regionalLeader'),
+        value: 'Regional Leader'
+      },
+      {
+        label: this.translate.instant('role.boss'),
+        value: 'Boss'
+      },
+      {
+        label: this.translate.instant('role.admin'),
+        value: 'Admin'
+      }
     ];
 
     this.secondaryRoles = [

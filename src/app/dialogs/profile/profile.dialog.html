@@ -25,8 +25,8 @@
                 <mat-select class="form-control" [(ngModel)]="data.primaryRole" name="primaryRole"
                 [disabled]="data?.primaryRole == 'Admin'" required (selectionChange)="onRoleChange($event.value)">
                     <mat-option>{{ 'profile.clear' | translate }}</mat-option>
-                    <mat-option *ngFor="let role of primaryRoles" [value]="role" [disabled]="checkRole(role)">
-                        {{role}}
+                    <mat-option *ngFor="let role of primaryRoles" [value]="role.value" [disabled]="checkRole(role.value)">
+                        {{role.label}}
                     </mat-option>
                 </mat-select>
                 <mat-error *ngIf="formControl.invalid">{{getErrorMessage()}}</mat-error>

@@ -6,6 +6,24 @@
     "numberErr": "数字のみ",
     "success": "成功しました！"
   },
+  "landing": {
+    "welcomeMsg": "ようこそ",
+    "signInTabText": "サインイン",
+    "signInCardTitleText": "サインイン",
+    "loginButtonText": "ログイン",
+    "forgotPasswordButtonText": "パスワードをお忘れですか？",
+    "nameText": "名前",
+    "nameErrorRequiredText": "名前が必須です",
+    "nameErrorMinLengthText": "名前が短すぎる",
+    "emailText": "メールアドレス",
+    "emailErrorRequiredText": "メールアドレスが必要です",
+    "emailErrorPatternText": "正しいメールアドレスを入力してください",
+    "passwordText": "パスワード",
+    "passwordErrorRequiredText": "パスワードが必要",
+    "registerTabText": "登録",
+    "registerCardTitleText": "登録",
+    "registerButtonText": "登録"
+  },
   "home": {
     "filter": "フィルタ",
     "chapter": "章",

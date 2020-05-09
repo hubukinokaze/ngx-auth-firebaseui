@@ -6,6 +6,24 @@
     "numberErr": "Must be a number",
     "success": "Success!"
   },
+  "landing": {
+    "welcomeMsg": "Welcome to HPR",
+    "signInTabText": "Sign In",
+    "signInCardTitleText": "Signing In",
+    "loginButtonText": "Log in",
+    "forgotPasswordButtonText": "Forgot Password?",
+    "nameText": "Name",
+    "nameErrorRequiredText": "Name is required",
+    "nameErrorMinLengthText": "Name is too short",
+    "emailText": "E-mail",
+    "emailErrorRequiredText": "E-mail is required",
+    "emailErrorPatternText": "Please enter a valid e-mail",
+    "passwordText": "Password",
+    "passwordErrorRequiredText": "Password is required",
+    "registerTabText": "Register",
+    "registerCardTitleText": "Registration",
+    "registerButtonText": "Register"
+  },
   "home": {
     "filter": "Filter",
     "chapter": "Chapter",
