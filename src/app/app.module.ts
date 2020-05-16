@@ -20,6 +20,7 @@ import {HomeComponent} from './components/home/home.component';
 import {LandingComponent} from './components/landing/landing.component';
 import {ManageUsersComponent} from './components/manage-users/manage-users.component';
 import {PageNotFoundComponent} from './components/page-not-found/page-not-found.component';
+import {LoginComponent} from './components/login/login.component';
 import {AddDialog} from './dialogs/add/add.dialog';
 import {DeleteDialog} from './dialogs/delete/delete.dialog';
 import {EditDialog} from './dialogs/edit/edit.dialog';
@@ -62,6 +63,9 @@ export function createTranslateLoader(http: HttpClient) {
 }
 
 @NgModule({
+  exports: [
+    LoginComponent
+  ],
   declarations: [
     AppComponent,
     FlipSection,
@@ -75,7 +79,8 @@ export function createTranslateLoader(http: HttpClient) {
     ConfirmationDialog,
     AvatarComponent,
     ManageUsersComponent,
-    PageNotFoundComponent
+    PageNotFoundComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule.withServerTransition({appId: 'serverApp'}),

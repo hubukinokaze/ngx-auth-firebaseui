@@ -257,33 +257,33 @@
     width: 1920px;
   }
 
-  ::ng-deep ngx-auth-firebaseui {
-    div.actions > a > span {
-      position: relative;
-      visibility: hidden;
-    }
+  // ::ng-deep ngx-auth-firebaseui {
+  //   div.actions > a > span {
+  //     position: relative;
+  //     visibility: hidden;
+  //   }
 
-    div.actions > a > span::after {
-      content: 'Go to reflections';
-      position: absolute;
-      left: -20px;
-      visibility: visible;
-    }
-  }
+    // div.actions > a > span::after {
+    //   content: 'Go to reflections';
+    //   position: absolute;
+    //   left: -20px;
+    //   visibility: visible;
+    // }
+  // }
 
-  ::ng-deep ngx-auth-firebaseui-email-confirmation {
-      button.go-back-button > span {
-        position: relative;
-        visibility: hidden;
-      }
+  // ::ng-deep ngx-auth-firebaseui-email-confirmation {
+  //     button.go-back-button > span {
+  //       position: relative;
+  //       visibility: hidden;
+  //     }
 
-      button.go-back-button > span::after {
-        content: 'Refresh page';
-        position: absolute;
-        left: -15px;
-        visibility: visible;
-      }
-  }
+  //     button.go-back-button > span::after {
+  //       content: 'Refresh page';
+  //       position: absolute;
+  //       left: -15px;
+  //       visibility: visible;
+  //     }
+  // }
 
 
   /* Responsive Styles */

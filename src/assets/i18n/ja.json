@@ -22,7 +22,9 @@
     "passwordErrorRequiredText": "パスワードが必要",
     "registerTabText": "登録",
     "registerCardTitleText": "登録",
-    "registerButtonText": "登録"
+    "registerButtonText": "登録",
+    "signOutText": "ログアウト",
+    "verifyEmailGoBackText": "感想へ"
   },
   "home": {
     "filter": "フィルタ",

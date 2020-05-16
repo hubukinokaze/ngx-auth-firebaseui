@@ -37,7 +37,6 @@ export class LandingComponent implements OnDestroy {
 
 
   constructor(public auth: AngularFireAuth,
-              private db: AngularFirestore,
               public router: Router,
               public snackbar: MatSnackBar,
               public translate: TranslateService) {

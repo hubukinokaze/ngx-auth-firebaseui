@@ -22,7 +22,9 @@
     "passwordErrorRequiredText": "Password is required",
     "registerTabText": "Register",
     "registerCardTitleText": "Registration",
-    "registerButtonText": "Register"
+    "registerButtonText": "Register",
+    "signOutText": "Sign out",
+    "verifyEmailGoBackText": "Go to Reflections"
   },
   "home": {
     "filter": "Filter",
