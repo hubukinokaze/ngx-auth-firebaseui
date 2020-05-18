@@ -91,7 +91,6 @@ export class AppComponent implements OnDestroy {
   }
 
   public onSetTheme(theme) {
-    console.log(this.theme, theme)
     this.renderer.removeClass(document.body, this.theme);
     this.theme = theme;
     this.renderer.addClass(document.body, this.theme);

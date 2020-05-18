@@ -32,42 +32,38 @@
 
   </div>
 
-  <mat-card>
+  <div *ngIf="isLoading">
+    <mat-spinner></mat-spinner>
+  </div>
+  <ng-container *ngIf="!isLoading">
+    <mat-card>
 
-    <!-- <mat-toolbar>
-        ngx-auth-firebaseui
-      </mat-toolbar> -->
+      <mat-card-content>
+        <ngx-auth-firebaseui app-login [signOutText]="'landing.signOutText' | translate"
+          [verifyEmailGoBackText]="'landing.verifyEmailGoBackText' | translate" [providers]="[providers.Google]"
+          [guestEnabled]="false" [resetPasswordEnabled]="false" [goBackURL]="'../home'"
+          [signInTabText]="'landing.signInTabText' | translate"
+          [signInCardTitleText]="'landing.signInCardTitleText' | translate"
+          [loginButtonText]="'landing.loginButtonText' | translate"
+          [forgotPasswordButtonText]="'landing.forgotPasswordButtonText' | translate"
+          [nameText]="'landing.nameText' | translate"
+          [nameErrorRequiredText]="'landing.nameErrorRequiredText' | translate"
+          [nameErrorMinLengthText]="'landing.nameErrorMinLengthText' | translate"
+          [nameErrorMaxLengthText]="'landing.nameErrorMaxLengthText' | translate"
+          [emailText]="'landing.emailText' | translate"
+          [emailErrorRequiredText]="'landing.emailErrorRequiredText' | translate"
+          [emailErrorPatternText]="'landing.emailErrorPatternText' | translate"
+          [passwordText]="'landing.passwordText' | translate"
+          [passwordErrorRequiredText]="'landing.passwordErrorRequiredText' | translate"
+          [registerTabText]="'landing.registerTabText' | translate"
+          [registerCardTitleText]="'landing.registerCardTitleText' | translate"
+          [registerButtonText]="'landing.registerButtonText' | translate" (onSuccess)="printUser($event)"
+          (onError)="printError($event)" (selectedTabChange)="onTabChange($event)">
+        </ngx-auth-firebaseui>
+      </mat-card-content>
+    </mat-card>
+  </ng-container>
 
-
-    <mat-card-content>
-      <ngx-auth-firebaseui
-        app-login
-        [signOutText]="'landing.signOutText' | translate"
-        [verifyEmailGoBackText]="'landing.verifyEmailGoBackText' | translate"
-        [providers]="[providers.Google]"
-        [guestEnabled]="false"
-        [resetPasswordEnabled]="false"
-        [goBackURL]="'../home'"
-        [signInTabText]="'landing.signInTabText' | translate"
-        [signInCardTitleText]="'landing.signInCardTitleText' | translate"
-        [loginButtonText]="'landing.loginButtonText' | translate"
-        [forgotPasswordButtonText]="'landing.forgotPasswordButtonText' | translate"
-        [nameText]="'landing.nameText' | translate"
-        [nameErrorRequiredText]="'landing.nameErrorRequiredText' | translate"
-        [nameErrorMinLengthText]="'landing.nameErrorMinLengthText' | translate"
-        [nameErrorMaxLengthText]="'landing.nameErrorMaxLengthText' | translate"
-        [emailText]="'landing.emailText' | translate"
-        [emailErrorRequiredText]="'landing.emailErrorRequiredText' | translate"
-        [emailErrorPatternText]="'landing.emailErrorPatternText' | translate"
-        [passwordText]="'landing.passwordText' | translate"
-        [passwordErrorRequiredText]="'landing.passwordErrorRequiredText' | translate"
-        [registerTabText]="'landing.registerTabText' | translate"
-        [registerCardTitleText]="'landing.registerCardTitleText' | translate"
-        [registerButtonText]="'landing.registerButtonText' | translate" (onSuccess)="printUser($event)"
-        (onError)="printError($event)" (selectedTabChange)="onTabChange($event)">
-      </ngx-auth-firebaseui>
-    </mat-card-content>
-  </mat-card>
 
   <!-- Footer -->
   <footer>

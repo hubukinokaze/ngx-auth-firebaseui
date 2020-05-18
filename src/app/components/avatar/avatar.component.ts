@@ -94,7 +94,6 @@ export class AvatarComponent implements OnInit {
     const mode       = localStorage.getItem('nightMode');
     this.isNightMode = !(mode && mode === 'true');
     this.isNightModeChecked = !this.isNightMode;
-    console.log(this.isNightModeChecked)
     setTimeout(() => {
       this.switchMode();
     });
