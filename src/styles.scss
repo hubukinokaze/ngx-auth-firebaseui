@@ -70,3 +70,98 @@ body {
         height: 80vh !important;
     }
 }
+
+.dark-theme {
+    background-color: #1e2124;
+
+    mat-card {
+        background-color: #979797;
+    }
+
+    .mat-form-field-underline {
+        background-color: white !important;
+      }
+
+    input,
+    label,
+    footer,
+    textarea,
+    h3,
+    .mat-menu-content > button,
+    .mat-select-value-text > span,
+    .profile-title {
+        color: white !important;
+    }
+
+    svg#moon > path {
+        fill: #bbbbbb;
+    }
+
+    svg#clouds > path {
+        fill: #2a1a4b;
+    }
+
+    tr.mat-header-row {
+        background-color: #282b30 !important;
+
+        .mat-sort-header-button {
+            color: white !important;
+        }
+    }
+
+    th.mat-header-cell:not(:first-of-type):not(:last-of-type) {
+            padding: 0.5em !important;
+        }
+
+    div#reflection tbody {
+        background-color: #36393e !important;
+
+        td {
+            color: white !important;
+
+            
+        }
+        
+        td.mat-cell:not(:first-of-type):not(:last-of-type) {
+            padding: 0.5em !important;
+        }
+        
+
+        tr:nth-child(4n + 1),
+        tr:nth-child(4n + 2) {
+            background-color: #673ab7 !important;
+        }
+
+        .element-row:hover {
+            background: #7c5692 !important;
+          }
+    }
+
+    div#user tbody {
+        background-color: #36393e !important;
+
+        td {
+            color: white !important;
+
+            
+        }
+        
+        td.mat-cell:not(:first-of-type):not(:last-of-type) {
+            padding: 0.5em !important;
+        }
+        
+
+        tr:nth-child(odd) {
+            background-color: #673ab7 !important;
+        }
+
+        .element-row:hover {
+            background: #7c5692 !important;
+          }
+    }
+
+    .mat-menu-panel, mat-dialog-container {
+        background-color: #747474;
+    }
+
+}

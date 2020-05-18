@@ -50,7 +50,8 @@
     "profile": "Profile",
     "userManagement": "Manage Users",
     "reflections": "Reflections",
-    "signOut": "Sign out"
+    "signOut": "Sign out",
+    "darkMode": "Dark Mode"
   },
   "profile": {
     "title": "My Profile",

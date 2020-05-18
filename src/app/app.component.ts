@@ -1,11 +1,10 @@
-import {Component, OnDestroy} from '@angular/core';
+import {Component, OnDestroy, Renderer2 } from '@angular/core';
 import {AuthProvider, Theme} from 'ngx-auth-firebaseui';
 import {Subscription} from 'rxjs';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {Router} from '@angular/router';
 import {AngularFireAuth} from '@angular/fire/auth';
 import {MatTabChangeEvent} from '@angular/material/tabs';
-import {AngularFirestore} from '@angular/fire/firestore';
 import {TranslateService} from '@ngx-translate/core';
 
 @Component({
@@ -28,22 +27,26 @@ export class AppComponent implements OnDestroy {
   snackbarSubscription: Subscription;
 
   error: boolean;
+  public isReady: boolean;
+  public theme: string = 'light-theme';
   public index: number;
   private _color: string;
 
   providers = AuthProvider;
-  themes = Theme;
+  // themes = Theme;
 
 
   constructor(public auth: AngularFireAuth,
-              private db: AngularFirestore,
               public router: Router,
               public snackbar: MatSnackBar,
-              public translate: TranslateService) {
+              public translate: TranslateService,
+              private renderer: Renderer2) {
                 translate.setDefaultLang('eng');
                 if (localStorage.getItem('language')) {
                   translate.use(localStorage.getItem('language'));
                 }
+
+                this.renderer.addClass(document.body, 'light-theme');
                 // translate.use('ja');
                 // console.log(translate.getLangs())
             }
@@ -85,5 +88,17 @@ export class AppComponent implements OnDestroy {
 
   createAccount() {
     console.log('create account has beeen requested');
+  }
+
+  public onSetTheme(theme) {
+    console.log(this.theme, theme)
+    this.renderer.removeClass(document.body, this.theme);
+    this.theme = theme;
+    this.renderer.addClass(document.body, this.theme);
+    this.isReady = true;
+  }
+
+  public goToPage(link) {
+    this.router.navigate([link]);
   }
 }

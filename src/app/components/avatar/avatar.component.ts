@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { Router } from '@angular/router';
@@ -19,6 +19,8 @@ import {TranslateService} from '@ngx-translate/core';
 })
 export class AvatarComponent implements OnInit {
 
+  @Output() modeEmit = new EventEmitter();
+
   snackbarSubscription: Subscription;
   userSubscription: Subscription;
   loginUserSubscription: Subscription;
@@ -29,6 +31,8 @@ export class AvatarComponent implements OnInit {
   public displayNameInitials: string;
   public isAdmin: boolean = false;
   public isManageUser: boolean = false;
+  public isNightMode: boolean;
+  public isNightModeChecked: boolean;
 
   constructor(private db: AngularFirestore,
     public auth: AngularFireAuth,
@@ -39,11 +43,14 @@ export class AvatarComponent implements OnInit {
     private translate: TranslateService) { }
 
   ngOnInit(): void {
+    this.setupMode();
     if (this.userService.getUser()) {
       this.setup(this.userService.getUser());
     } else {
       this.userSubscription = this.userService.getUserEvent().subscribe((userData: User) => {
-        this.setup(userData);
+        if (userData) {
+          this.setup(userData);
+        }
       });
     }
 
@@ -51,7 +58,11 @@ export class AvatarComponent implements OnInit {
       this.loginUser = this.userService.getLoginUser();
     } else {
       this.loginUserSubscription = this.userService.getLoginUserEvent().subscribe((userData: LoginUser) => {
-        this.loginUser = userData;
+        if (userData) {
+          this.loginUser = userData;
+        } else {
+          this.loginUser = null;
+        }
       });
     }
 
@@ -62,7 +73,7 @@ export class AvatarComponent implements OnInit {
     this.user = userData;
     this.displayNameInitials = this.getDisplayNameInitials(this.user?.displayName);
 
-    if (this.user.primaryRole != 'Member') {
+    if (this.user && this.user.primaryRole != 'Member') {
       this.isAdmin = true;
     }
   }
@@ -76,6 +87,26 @@ export class AvatarComponent implements OnInit {
     }
     if (this.loginUserSubscription) {
       this.loginUserSubscription.unsubscribe();
+    }
+  }
+
+  private setupMode() {
+    const mode       = localStorage.getItem('nightMode');
+    this.isNightMode = !(mode && mode === 'true');
+    this.isNightModeChecked = !this.isNightMode;
+    console.log(this.isNightModeChecked)
+    setTimeout(() => {
+      this.switchMode();
+    });
+  }
+
+  public switchMode() {
+    this.isNightMode = !this.isNightMode;
+    localStorage.setItem('nightMode', this.isNightMode.toString());
+    if (this.isNightMode) {
+      this.modeEmit.emit('dark-theme');
+    } else {
+      this.modeEmit.emit('light-theme');
     }
   }
 
@@ -131,6 +162,9 @@ export class AvatarComponent implements OnInit {
       this.router.navigate(['/landing']);
       this.userService.setUser(null);
       this.userService.setLoginUser(null);
+      this.user = null;
+      this.tempUser = null;
+      this.loginUser = null;
     });
 
   }

@@ -20,7 +20,8 @@ import {HomeComponent} from './components/home/home.component';
 import {LandingComponent} from './components/landing/landing.component';
 import {ManageUsersComponent} from './components/manage-users/manage-users.component';
 import {PageNotFoundComponent} from './components/page-not-found/page-not-found.component';
-import {LoginComponent} from './components/login/login.component';
+import { AvatarComponent } from './components/avatar/avatar.component';
+
 import {AddDialog} from './dialogs/add/add.dialog';
 import {DeleteDialog} from './dialogs/delete/delete.dialog';
 import {EditDialog} from './dialogs/edit/edit.dialog';
@@ -41,7 +42,9 @@ import {MatMenuModule} from '@angular/material/menu';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatDividerModule} from '@angular/material/divider';
-import { AvatarComponent } from './components/avatar/avatar.component';
+import {MatSlideToggleModule} from '@angular/material/slide-toggle';
+
+import {LoginDirective} from './components/login/login.directive';
 
 export const firebaseKey = {
     apiKey: "AIzaSyC4CqiByhbG-3r2RGRnJ_dzWNighzZi6j4",
@@ -63,9 +66,6 @@ export function createTranslateLoader(http: HttpClient) {
 }
 
 @NgModule({
-  exports: [
-    LoginComponent
-  ],
   declarations: [
     AppComponent,
     FlipSection,
@@ -80,7 +80,7 @@ export function createTranslateLoader(http: HttpClient) {
     AvatarComponent,
     ManageUsersComponent,
     PageNotFoundComponent,
-    LoginComponent
+    LoginDirective
   ],
   imports: [
     BrowserModule.withServerTransition({appId: 'serverApp'}),
@@ -125,6 +125,7 @@ export function createTranslateLoader(http: HttpClient) {
     MatProgressSpinnerModule,
     MatTooltipModule,
     MatDividerModule,
+    MatSlideToggleModule,
     NgxAuthFirebaseUIModule.forRoot(firebaseKey)
   ],
   providers: [],

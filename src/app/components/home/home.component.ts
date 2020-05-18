@@ -96,7 +96,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   private getReflections() {
     let chapterList = [""]
-    if (this.user.chapters && this.user.chapters.length > 0) {
+    if (this.user && this.user.chapters && this.user.chapters.length > 0) {
       chapterList = this.user.chapters;
     }
     this.db.collection("reflections").ref.orderBy("created", "desc").where("carpChapter", "in", chapterList).limit(this.loadLimit).get().then((snapshot) => {

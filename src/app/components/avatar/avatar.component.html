@@ -23,6 +23,16 @@
     </div>
   </div>
 
+  <mat-divider></mat-divider>
+
+  <section class="toggle-section" (click)="$event.stopPropagation()">
+    <mat-slide-toggle class="toggle-btn" color="primary" [checked]="isNightModeChecked" (click)="switchMode()">
+      <span>{{ "avatar.darkMode" | translate }}</span>
+    </mat-slide-toggle>
+  </section>
+
+  <mat-divider></mat-divider>
+
   <div class="menu-container" fxFlex="100" fxLayout="column">
     <button (click)="openProfile()" color="primary" mat-button>
       <mat-icon aria-label="Profile">whatshot</mat-icon>

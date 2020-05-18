@@ -23,7 +23,7 @@ export enum AuthProvider {
 @Directive({
   selector: '[app-login]',
 })
-export class LoginComponent {
+export class LoginDirective {
 
   constructor(
     private changeDetectorRef: ChangeDetectorRef,

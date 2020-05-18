@@ -50,7 +50,8 @@
     "profile": "プロフィール",
     "userManagement": "ユーザー管理",
     "reflections": "感想",
-    "signOut": "ログアウト"
+    "signOut": "ログアウト",
+    "darkMode": "ダークモード"
   },
   "profile": {
     "title": "マイプロフィール",
