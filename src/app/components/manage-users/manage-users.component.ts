@@ -191,21 +191,26 @@ export class ManageUsersComponent implements OnInit, OnDestroy {
   }
 
   public reformatChapters(chapters: Array<string>, type: string): string {
-    chapters = chapters.sort();
-    if (type === 'display') {
-      if (chapters && chapters.length > 3) {
-        return `${chapters[0]}, ${chapters[1]}, ${chapters[2]}, +${chapters.length - 3}`;
-      } else if (chapters && chapters.length > 0 && chapters.length < 4) {
-        return chapters.join(', ');
+    if (chapters && chapters.length > 0) {
+      chapters = chapters.sort();
+      if (type === 'display') {
+        if (chapters && chapters.length > 3) {
+          return `${chapters[0]}, ${chapters[1]}, ${chapters[2]}, +${chapters.length - 3}`;
+        } else if (chapters && chapters.length > 0 && chapters.length < 4) {
+          return chapters.join(', ');
+        }
+  
+        return 'N/A';
+      } else {
+        if (chapters && chapters.length > 3) {
+          const extra: Array<string> = chapters.slice(3);
+          return extra.join(', ');
+        }
       }
-
-      return 'N/A';
     } else {
-      if (chapters && chapters.length > 3) {
-        const extra: Array<string> = chapters.slice(3);
-        return extra.join(', ');
-      }
+      return 'N/A';
     }
+    
 
   }
 

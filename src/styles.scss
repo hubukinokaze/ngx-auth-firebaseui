@@ -50,6 +50,27 @@ body {
     min-height: 320px;
 }
 
+th.mat-header-cell:not(:first-of-type):not(:last-of-type) {
+    padding: 0.5em !important;
+}
+
+tbody td.mat-cell:not(:first-of-type):not(:last-of-type) {
+    padding: 0.5em !important;
+}
+
+.mat-paginator {
+    margin: 1em 0em;
+}
+
+.mat-paginator.reflection-paginator {
+    min-width: 100%;
+}
+
+.mat-paginator.user-paginator {
+    min-width: 50%;
+    padding: 0 8px;
+}
+
 @media screen and (max-width: 575px) {
     .full-width-dialog,
     .full-width-dialog.add-dialog,
@@ -100,19 +121,11 @@ body {
         }
     }
 
-    th.mat-header-cell:not(:first-of-type):not(:last-of-type) {
-        padding: 0.5em !important;
-    }
-
     div#reflection tbody {
         background-color: #36393e !important;
 
         td {
             color: white !important;
-        }
-
-        td.mat-cell:not(:first-of-type):not(:last-of-type) {
-            padding: 0.5em !important;
         }
 
         tr:nth-child(4n + 1),
@@ -126,10 +139,6 @@ body {
 
         td {
             color: white !important;
-        }
-
-        td.mat-cell:not(:first-of-type):not(:last-of-type) {
-            padding: 0.5em !important;
         }
 
         tr:nth-child(odd) {

@@ -155,9 +155,28 @@
       }
     }
 
-    @media screen and (max-width: 375px) {
-      th.mat-column-secondaryRole, td.mat-column-secondaryRole {
-        display: none;
+    @media screen and (max-width: 575px) {
+      // th.mat-column-secondaryRole, td.mat-column-secondaryRole {
+      //   display: none;
+      // }
+
+      div#user.table-container {
+        width: 98vw;
+        overflow-x: auto;
+
+        .reflection-table {
+          width: 550px;
+
+          td.mat-column-displayName {
+            box-sizing: border-box;
+            border-right: 1px solid rgb(173, 173, 173);
+          }
+
+          td.mat-column-actions {
+            box-sizing: border-box;
+            border-left: 1px solid rgb(173, 173, 173);
+          }
+        }
       }
     }
   }
