@@ -9,15 +9,6 @@ body {
     font-family: Roboto, "Helvetica Neue", sans-serif;
 }
 
-html,
-body {
-    height: 100%;
-}
-body {
-    margin: 0;
-    font-family: Roboto, "Helvetica Neue", sans-serif;
-}
-
 // .add-dialog .mat-dialog-container,
 // .edit-dialog .mat-dialog-container,
 // .delete-dialog .mat-dialog-container {
@@ -49,7 +40,7 @@ body {
     max-width: 70vw !important;
     width: 35em;
     height: 65vh;
-    min-height: 320px;
+    // min-height: 320px;
 }
 
 .full-width-dialog.delete-dialog {
@@ -80,9 +71,9 @@ body {
 
     .mat-form-field-underline {
         background-color: white !important;
-      }
+    }
 
-    input,
+    input:not(:disabled),
     label,
     footer,
     textarea,
@@ -110,31 +101,24 @@ body {
     }
 
     th.mat-header-cell:not(:first-of-type):not(:last-of-type) {
-            padding: 0.5em !important;
-        }
+        padding: 0.5em !important;
+    }
 
     div#reflection tbody {
         background-color: #36393e !important;
 
         td {
             color: white !important;
-
-            
         }
-        
+
         td.mat-cell:not(:first-of-type):not(:last-of-type) {
             padding: 0.5em !important;
         }
-        
 
         tr:nth-child(4n + 1),
         tr:nth-child(4n + 2) {
             background-color: #673ab7 !important;
         }
-
-        .element-row:hover {
-            background: #7c5692 !important;
-          }
     }
 
     div#user tbody {
@@ -142,26 +126,25 @@ body {
 
         td {
             color: white !important;
-
-            
         }
-        
+
         td.mat-cell:not(:first-of-type):not(:last-of-type) {
             padding: 0.5em !important;
         }
-        
 
         tr:nth-child(odd) {
             background-color: #673ab7 !important;
         }
-
-        .element-row:hover {
-            background: #7c5692 !important;
-          }
     }
 
-    .mat-menu-panel, mat-dialog-container {
+    .mat-menu-panel,
+    mat-dialog-container {
         background-color: #747474;
     }
 
+    @media screen and (max-width: 575px) {
+        .element-row:hover {
+            background: #7c5692 !important;
+        }
+    }
 }

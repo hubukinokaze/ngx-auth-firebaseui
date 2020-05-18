@@ -34,7 +34,7 @@
       .reflection-table {
         width: 100%;
 
-        td.mat-column-name {
+        td.mat-column-displayName {
           width: 30%;
         }
 
@@ -49,6 +49,10 @@
 
         td.mat-column-actions {
           width: 1%;
+        }
+
+        td.mat-cell {
+          font-size: 1.2em;
         }
 
         tr:nth-child(odd) {
@@ -131,6 +135,12 @@
 
     .content {
       max-width: 100%;
+
+      .filter-form {
+        width: 75%;
+        font-size: 1.2em;
+        font-weight: bold;
+      }
       
       .table-container {
         min-width: 10%;
@@ -142,6 +152,12 @@
           }
         }
         
+      }
+    }
+
+    @media screen and (max-width: 375px) {
+      th.mat-column-secondaryRole, td.mat-column-secondaryRole {
+        display: none;
       }
     }
   }

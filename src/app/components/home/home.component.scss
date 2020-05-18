@@ -42,7 +42,7 @@
           max-width: 100px;
         }
 
-        td.mat-column-name {
+        td.mat-column-displayName {
           width: 20%;
         }
 
@@ -54,6 +54,10 @@
 
         td.mat-column-actions {
           width: 1%;
+        }
+
+        td.mat-cell {
+          font-size: 1.2em;
         }
 
         tr:nth-child(4n + 1), tr:nth-child(4n + 2) {
@@ -186,6 +190,12 @@
 
     .content {
       max-width: 100%;
+
+      .filter-form {
+        width: 75%;
+        font-size: 1.2em;
+        font-weight: bold;
+      }
       
       .table-container {
         min-width: 10%;
@@ -221,3 +231,4 @@
       }
     }
   }
+  

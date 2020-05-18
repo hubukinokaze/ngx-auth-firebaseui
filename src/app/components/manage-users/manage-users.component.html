@@ -39,7 +39,11 @@
             <!-- chapter Column -->
             <ng-container matColumnDef="chapters">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header> {{ 'users.chapters' | translate }} </th>
-                <td mat-cell *matCellDef="let row" matTooltip="{{reformatChapters(row?.chapters, 'tooltip')}}"> {{reformatChapters(row?.chapters, 'display')}} </td>
+                <td mat-cell *matCellDef="let row"
+                    #tooltip="matTooltip"
+                    (click)="tooltip.toggle()"
+                    matTooltipPosition="above"
+                    matTooltip="{{reformatChapters(row?.chapters, 'tooltip')}}"> {{reformatChapters(row?.chapters, 'display')}} </td>
             </ng-container>
 
             <!-- actions -->
