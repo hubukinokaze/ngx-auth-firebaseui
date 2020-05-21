@@ -29,7 +29,7 @@
     }
 
     .table-container {
-      min-width: 50%;
+      width: 100%;
 
       .reflection-table {
         width: 100%;
@@ -45,6 +45,7 @@
 
         td.mat-column-chapters {
           width: auto;
+          touch-action: auto !important;
         }
 
         td.mat-column-actions {

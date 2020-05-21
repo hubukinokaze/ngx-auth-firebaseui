@@ -83,7 +83,9 @@
 
     </div>
 
-    <mat-paginator class="user-paginator mat-elevation-z8" [pageSizeOptions]="[20, 30, 50]"></mat-paginator>
+    <div class="full-width" [hidden]="isLoading">
+        <mat-paginator class="user-paginator mat-elevation-z8" [pageSizeOptions]="[20, 30, 50]"></mat-paginator>
+    </div>
 
     <div class="spacer"></div>
 
