@@ -41,6 +41,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   public tempReflectionArray: Array<Reflection>;
   public isLoading: boolean = true;
   private loadLimit: number = 50;
+  private pageData: any;
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
@@ -51,6 +52,12 @@ export class HomeComponent implements OnInit, OnDestroy {
     private snackbar: MatSnackBar,
     private userService: UserService,
     private translate: TranslateService) {
+    this.pageData = {
+      length: 100,
+      pageIndex: 0,
+      pageSize: 20,
+      previousPageIndex: -1
+    }
   }
 
   ngOnInit(): void {
@@ -61,7 +68,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       } else if (this.user?.primaryRole == 'Member') {
         this.loadLimit = 25;
       }
-      
+
       this.getReflections();
     } else {
       this.userSubscription = this.userService.getUserEvent().subscribe((userData: User) => {
@@ -120,27 +127,7 @@ export class HomeComponent implements OnInit, OnDestroy {
         }
       }
 
-      let sortBy = [{
-        prop: 'carpChapter',
-        direction: 1
-      }, {
-        prop: 'source',
-        direction: 1
-      }, {
-        prop: 'episode',
-        direction: -1
-      }];
-
-      data.sort(function (a, b) {
-        let i = 0, result = 0;
-        while (i < sortBy.length && result === 0) {
-          result = sortBy[i].direction * (a[sortBy[i].prop].toString() < b[sortBy[i].prop].toString() ? -1 : (a[sortBy[i].prop].toString() > b[sortBy[i].prop].toString() ? 1 : 0));
-          i++;
-        }
-        return result;
-      });
-
-      this.tempReflectionArray = data;
+      this.tempReflectionArray = this.sorter(data);
       this.isLoading = false;
 
       this.dataSource = new MatTableDataSource(data);
@@ -195,14 +182,36 @@ export class HomeComponent implements OnInit, OnDestroy {
     // });
   }
 
+  private sorter(data) {
+    let sortBy = [{
+      prop: 'carpChapter',
+      direction: 1
+    }, {
+      prop: 'source',
+      direction: 1
+    }, {
+      prop: 'episode',
+      direction: -1
+    }];
+
+    return data.sort(function (a, b) {
+      let i = 0, result = 0;
+      while (i < sortBy.length && result === 0) {
+        result = sortBy[i].direction * (a[sortBy[i].prop].toString() < b[sortBy[i].prop].toString() ? -1 : (a[sortBy[i].prop].toString() > b[sortBy[i].prop].toString() ? 1 : 0));
+        i++;
+      }
+      return result;
+    });
+  }
+
   private async getUser(userURL: string) {
     const storedUsers = this.userService.getStoredUsers();
-    
+
     if (storedUsers[userURL]) {
       return storedUsers[userURL];
     }
 
-    return await this.db.doc<User>(userURL).ref.get().then( (snapshot) => {
+    return await this.db.doc<User>(userURL).ref.get().then((snapshot) => {
       const data = snapshot.data();
       this.userService.addStoredUsers(userURL, data);
       return new User(data.uid, data.displayName, data.email, data.chapters, data.primaryRole, data.secondaryRole);
@@ -237,6 +246,7 @@ export class HomeComponent implements OnInit, OnDestroy {
           result.userURL = `users/${this.user.id}`;
 
           this.tempReflectionArray.push(result);
+          console.log(this.tempReflectionArray)
           this.refreshTable(this.tempReflectionArray);
 
           this.snackbar.open(this.translate.instant('console.success'), 'OK', { duration: 5000 });
@@ -249,6 +259,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   public startEdit(i: number, reflection: Reflection) {
+    const position: number = (this.pageData.pageSize * this.pageData.pageIndex) + i;
     const dialogRef = this.dialog.open(EditDialog, {
       data: {
         chapters: this.user.chapters,
@@ -264,8 +275,8 @@ export class HomeComponent implements OnInit, OnDestroy {
         this.db.collection('reflections').doc(result.id).update(result).then((newResult) => {
           this.isLoading = true;
           result.userURL = `users/${this.user.id}`;
-          
-          this.tempReflectionArray.splice(i, 1, result);
+
+          this.tempReflectionArray.splice(position, 1, result);
           this.refreshTable(this.tempReflectionArray);
           this.snackbar.open(this.translate.instant('console.success'), 'OK', { duration: 5000 });
         }).catch((error) => {
@@ -276,6 +287,9 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   public deleteItem(i: number, reflection: Reflection) {
+
+    const position: number = (this.pageData.pageSize * this.pageData.pageIndex) + i;
+    console.log(position, this.tempReflectionArray[position]);
     const dialogRef = this.dialog.open(DeleteDialog, {
       data: reflection,
       panelClass: ['full-width-dialog', 'delete-dialog']
@@ -284,7 +298,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.db.collection('reflections').doc(reflection.id).delete().then(() => {
-          this.tempReflectionArray.splice(i, 1);
+          console.log(this.tempReflectionArray.splice(position, 1));
 
           this.refreshTable(this.tempReflectionArray);
 
@@ -297,6 +311,10 @@ export class HomeComponent implements OnInit, OnDestroy {
     });
   }
 
+  public getPage(data) {
+    this.pageData = data;
+  }
+
   private whatRank(privilege: string): number {
     if (privilege == 'Admin') {
       return 5;
@@ -305,7 +323,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     } else if (privilege == 'Regional Leader') {
       return 3;
     } else if (privilege == 'President') {
-     return 2;
+      return 2;
     }
     return 0;
   }
@@ -321,7 +339,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   private refreshTable(data) {
-    this.dataSource = new MatTableDataSource(data);
+    this.dataSource = new MatTableDataSource(this.sorter(data));
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
     this.isLoading = false;
@@ -347,5 +365,5 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.router.navigate([link]);
   }
 
-  
+
 }
